@@ -1,6 +1,6 @@
 # Le Pire Duo va en Prison
 
-Jeu d'interrogatoire entre potes, inspiré du concept de Squeezie. 2 duos, 3 manches. À chaque manche, chaque duo passe à tour de rôle : il reçoit le contexte de l'affaire et la liste des points que l'inspecteur va creuser, invente son alibi, puis répond séparément à 10 questions pendant que l'autre duo observe. Le duo dont les versions collent le moins part en cellule.
+Jeu d'interrogatoire entre potes, inspiré du concept de Squeezie. 2 duos, 3 manches. À chaque manche, chaque duo passe à tour de rôle : il découvre un alibi à trous (un récit dévoilé paragraphe par paragraphe), invente ensemble tout ce qui se passe entre les lignes, puis répond séparément aux questions de l'inspecteur. Le duo dont les versions collent le moins part en cellule.
 
 ## Jouer
 1. Un joueur ouvre le site, choisit un nom et une tête, clique **Créer une salle**.
@@ -8,7 +8,7 @@ Jeu d'interrogatoire entre potes, inspiré du concept de Squeezie. 2 duos, 3 man
 3. Les 3 autres ouvrent le lien, choisissent leur nom et rejoignent.
 4. Chacun s'assoit dans un duo, l'hôte clique **Ouvrir l'enquête**.
 
-Pendant la préparation (3 min), le duo qui passe file dans un salon vocal Discord privé pour inventer son alibi point par point. Pendant l'interrogatoire, il revient et répond en silence ; l'autre duo regarde « derrière le miroir ».
+Pendant la préparation (3 min), le duo qui passe file dans un salon vocal Discord privé pour inventer son alibi. L'autre duo observe : il voit les réponses en direct derrière le miroir, parie « pareil / pas pareil » à chaque question, peut glisser une question piège et envoyer des réactions. Le meilleur parieur est sacré « Meilleur indic ».
 
 ## Fonctionnement technique
 - 100 % statique (HTML/CSS/JS), hébergeable sur GitHub Pages.

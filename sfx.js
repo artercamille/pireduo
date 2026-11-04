@@ -43,6 +43,7 @@ const SFX = {
   slam(){ noise(.5,.6,0,500); tone(70,.6,"sine",.8,0,35); noise(.25,.35,.08,3000,"highpass"); },
   paper(){ noise(.18,.18,0,2500,"bandpass"); },
   join(){ tone(523,.12,"triangle",.15); tone(784,.18,"triangle",.15,.1); },
+  pop(){ tone(880,.08,"triangle",.15,0,1320); },
   win(){ [523,659,784,1047].forEach((f,i)=>tone(f,.25,"triangle",.18,i*.12)); }
 };
 

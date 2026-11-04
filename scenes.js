@@ -58,8 +58,8 @@ function tape(){
     <g transform="translate(1040 760) rotate(-38)"><rect width="380" height="50" fill="url(#tape)" stroke="${INK}" stroke-width="5"/><rect x="80" y="8" width="230" height="34" fill="#FFC23D"/><text x="195" y="35" text-anchor="middle" font-family="Lilita One" font-size="24" fill="${INK}">SCÈNE DE CRIME</text></g></svg>`;
 }
 
-function desk(){
-  return `<svg class="layer" width="1280" height="720" viewBox="0 0 1280 720" aria-hidden="true"><defs>
+function desk(withFolder=true){
+  const out = `<svg class="layer" width="1280" height="720" viewBox="0 0 1280 720" aria-hidden="true"><defs>
     <linearGradient id="plank" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9C6334"/><stop offset="1" stop-color="#7E4B22"/></linearGradient>
     <linearGradient id="manila" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F2C878"/><stop offset="1" stop-color="#DDA752"/></linearGradient>
     <filter id="soft"><feGaussianBlur stdDeviation="6"/></filter></defs>
@@ -90,6 +90,7 @@ function desk(){
       <rect x="474" y="42" width="410" height="536" rx="4" fill="#FFF3DC" stroke="${INK}" stroke-width="4" transform="rotate(1.2 680 310)"/>
       <g transform="translate(70 24)"><path d="M0 18 L0 -6 Q0 -18 12 -18 Q24 -18 24 -6 L24 40 Q24 52 12 52 Q2 52 2 40 L2 4" fill="none" stroke="${INK}" stroke-width="8" stroke-linecap="round"/><path d="M0 18 L0 -6 Q0 -18 12 -18 Q24 -18 24 -6 L24 40 Q24 52 12 52 Q2 52 2 40 L2 4" fill="none" stroke="#C9D2E3" stroke-width="3.5" stroke-linecap="round"/></g>
     </g></svg>`;
+  return withFolder ? out : out.replace(/<g transform="translate\(170 64\)">[\s\S]*<\/g><\/svg>$/, "</svg>");
 }
 function deskLight(){
   return `<svg class="layer" style="pointer-events:none" width="1280" height="720" viewBox="0 0 1280 720" aria-hidden="true"><defs><radialGradient id="lampD" cx=".42" cy=".38" r=".7"><stop offset="0" stop-color="#FFE7A8" stop-opacity=".5"/><stop offset=".5" stop-color="#FFC66B" stop-opacity=".1"/><stop offset="1" stop-color="#120A04" stop-opacity=".45"/></radialGradient></defs><rect class="flicker" width="1280" height="720" fill="url(#lampD)"/></svg>`;
