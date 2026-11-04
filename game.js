@@ -113,7 +113,7 @@ function act(a){
 
 /* ---------- Application de l'état + sons ---------- */
 function sig(s){
-  return { phase:s.phase, q:s.q, round:s.round, ridx:s.ridx, n:Object.keys(s.players).length,
+  return { phase:s.phase, turn:s.turn, q:s.q, round:s.round, ridx:s.ridx, n:Object.keys(s.players).length,
            signed:Object.keys(s.signed||{}).length, ov:JSON.stringify(s.overrides||{}) };
 }
 function applyState(s, rem){
@@ -127,10 +127,10 @@ function applyState(s, rem){
     if(now.phase === "roundEnd") AU.sfx("win");
     if(now.phase === "verdict"){ setTimeout(()=>AU.sfx("slam"), 150); setTimeout(()=>AU.sfx("siren"), 700); setTimeout(()=>AU.speak(S.loser==="both" ? "Égalité. Tout le monde en cellule." : "Coupables ! Embarquez-moi ces deux-là."), 1400); }
   }
-  if(now.phase === "interro" && (now.phase !== prev.phase || now.q !== prev.q)){ AU.sfx("ding"); speakQuestion(); }
+  if(now.phase === "interro" && (now.phase !== prev.phase || now.q !== prev.q || now.turn !== prev.turn)){ AU.sfx("ding"); speakQuestion(); }
   if(now.phase === "interro" && now.signed > prev.signed && now.q === prev.q) AU.sfx("type");
-  if(now.phase === "reveal" && (now.phase !== prev.phase || now.ridx !== prev.ridx || now.ov !== prev.ov)){
-    const {q, duo} = L.stepInfo(S.ridx); const ok = L.matchOf(S, S.round, q, duo);
+  if(now.phase === "reveal" && (now.phase !== prev.phase || now.turn !== prev.turn || now.ridx !== prev.ridx || now.ov !== prev.ov)){
+    const {q, duo} = L.stepInfo(S.ridx, S); const ok = L.matchOf(S, S.round, q, duo);
     setTimeout(() => AU.sfx(ok ? "match" : "fail"), now.ov !== prev.ov && now.ridx === prev.ridx ? 50 : 520);
   }
 }
@@ -140,8 +140,8 @@ const me = () => S && S.players[myId];
 const isHost = () => role === "host";
 function namesFor(duo){ return L.duoNames(S, duo || "A"); }
 function myDuo(){ const p = me(); return (p && p.duo) || "A"; }
-function questionText(r, q, duo){ const sc = L.scenOf(S, r); return sc ? L.fmt(sc.questions[q], namesFor(duo)) : ""; }
-function speakQuestion(){ const t = questionText(S.round, S.q, myDuo()); setTimeout(()=>AU.speak(t), 350); }
+function questionText(r, q, duo){ const sc = L.scenOf(S, r, duo); return sc ? L.fmt(sc.questions[q], namesFor(duo)) : ""; }
+function speakQuestion(){ const t = questionText(S.round, S.q, S.turn); setTimeout(()=>AU.speak(t), 350); }
 function remaining(){ return localDeadline ? Math.max(0, localDeadline - Date.now()) : 0; }
 function fmtTime(ms){ const s = Math.ceil(ms/1000); return s >= 60 ? Math.floor(s/60) + ":" + String(s%60).padStart(2,"0") : String(s); }
 function portrait(p, expr, w=148, h=146){ return A.portrait(p ? p.av : 0, expr, w, h); }
@@ -150,7 +150,7 @@ function link(){ return location.origin + location.pathname + roomQuery(S.code);
 /* ---------- Rendu ---------- */
 function render(){
   if(!S){ renderHome(); return; }
-  const key = S.phase === "interro" ? "i" + S.round + "-" + S.q : null;
+  const key = S.phase === "interro" ? "i" + S.round + S.turn + "-" + S.q : null;
   if(key && key === lastKey){ patchInterro(); return; }
   lastKey = key || "";
   const fn = { lobby:renderLobby, dossier:renderDossier, interro:renderInterro, reveal:renderReveal, roundEnd:renderRoundEnd, verdict:renderVerdict }[S.phase];
@@ -241,42 +241,44 @@ function renderLobby(){
 
 /* Dossier */
 function renderDossier(){
-  const duo = myDuo(), names = namesFor(duo), sc = L.scenOf(S, S.round);
-  const partner = L.members(S, duo).find(p => p.id !== myId);
-  const p = me(), ready = p && p.ready;
+  const duo = S.turn, names = namesFor(duo), sc = L.scenOf(S, S.round, duo);
+  const p = me(), playing = p && p.duo === duo, ready = playing && p.ready;
+  const partner = L.members(S, duo).find(x => x.id !== myId);
   const f = t => esc(L.fmt(t, names));
-  const readyDots = L.seated(S).map(x => `<div title="${esc(x.name)}" style="width:38px;height:38px;border-radius:50%;border:3px solid ${INK};overflow:hidden;background:${x.ready?"#6FD6B8":"#E9DFCB"};position:relative">${A.portrait(x.av, x.ready?"happy":"neutral", 38, 38)}${x.ready?`<div style="position:absolute;right:-2px;bottom:-2px;width:16px;height:16px;border-radius:50%;background:#2EA35A;border:2px solid ${INK}"></div>`:""}</div>`).join("");
+  const readyDots = L.members(S, duo).map(x => `<div title="${esc(x.name)}" style="width:38px;height:38px;border-radius:50%;border:3px solid ${INK};overflow:hidden;background:${x.ready?"#6FD6B8":"#E9DFCB"};position:relative">${A.portrait(x.av, x.ready?"happy":"neutral", 38, 38)}${x.ready?`<div style="position:absolute;right:-2px;bottom:-2px;width:16px;height:16px;border-radius:50%;background:#2EA35A;border:2px solid ${INK}"></div>`:""}</div>`).join("");
+  const facts = sc.faits.map((t,i)=>`<div style="display:flex;gap:10px;align-items:flex-start;border-bottom:2px dashed #D9CBAE;padding:5px 0">
+      <div class="lil" style="flex:none;width:26px;height:26px;border-radius:50%;background:${duo==="A"?"#2F5DA8":"#FF5A5F"};color:#FFF8EA;border:3px solid ${INK};display:flex;align-items:center;justify-content:center;font-size:14px">${i+1}</div>
+      <div class="typew" style="font-size:16px;line-height:1.3">${f(t)}</div></div>`).join("");
   return SC.desk() + `
   ${SC.deskLight()}
   <div class="lil" style="position:absolute;left:318px;top:66px;width:150px;text-align:center;font-size:20px;letter-spacing:1px">MANCHE ${S.round+1} / 3</div>
-  <div class="fadeIn" style="position:absolute;left:236px;top:120px;width:352px;display:flex;flex-direction:column;gap:8px">
-    <div class="typew" style="font-size:14px;color:#6B6355">AFFAIRE N° ${String(47+S.round).padStart(3,"0")} · ${esc(sc.heure.toUpperCase())}</div>
-    <h1 class="lil" style="margin:0;font-size:42px;line-height:1;color:#16213A">${esc(sc.titre)}</h1>
-    <p class="typew" style="margin:0;font-size:18px;line-height:36px">${f(sc.pitch)} L'inspecteur va vérifier CHAQUE détail.</p>
-    <div class="marker" style="margin-top:4px;font-size:21px;color:#D7262E;transform:rotate(-2deg)">→ Mettez-vous d'accord sur TOUT.</div>
+  <div class="fadeIn" style="position:absolute;left:236px;top:116px;width:352px;display:flex;flex-direction:column;gap:8px">
+    <div class="typew" style="font-size:14px;color:#6B6355">AFFAIRE N° ${String(47+S.round*2+(duo==="B"?1:0)).padStart(3,"0")} · ${esc(sc.heure.toUpperCase())}</div>
+    <h1 class="lil" style="margin:0;font-size:40px;line-height:1;color:#16213A">${esc(sc.titre)}</h1>
+    <div style="display:flex;align-items:center;gap:8px"><div class="lil" style="font-size:16px;background:${duo==="A"?"#9FD3FF":"#FFB3AE"};border:3px solid ${INK};border-radius:8px;padding:0 10px">SUSPECTS · DUO ${duo}</div><div class="marker" style="font-size:17px">${esc(names.A)} & ${esc(names.B)}</div></div>
+    <p class="typew" style="margin:0;font-size:17px;line-height:34px">${f(sc.pitch)}</p>
+    <div class="marker" style="font-size:20px;color:#D7262E;transform:rotate(-2deg)">→ Apprenez l'alibi par cœur et inventez ensemble TOUT le reste.</div>
   </div>
-  <div class="fadeIn" style="position:absolute;left:676px;top:116px;width:340px;display:flex;flex-direction:column;gap:12px;transform:rotate(1.2deg)">
-    <div style="align-self:center;width:230px;background:#FFF;border:4px solid ${INK};padding:10px 10px 8px;transform:rotate(-4deg);box-shadow:5px 6px 0 rgba(21,19,31,.35);display:flex;flex-direction:column;gap:6px">
-      <div style="height:140px;background:#2A2048;border:3px solid ${INK};overflow:hidden"><svg aria-hidden="true" width="204" height="134" viewBox="0 0 204 144"><defs><radialGradient id="spot" cx=".5" cy="0" r=".9"><stop offset="0" stop-color="#FF7BD5" stop-opacity=".7"/><stop offset="1" stop-color="#FF7BD5" stop-opacity="0"/></radialGradient></defs><rect width="204" height="144" fill="url(#spot)"/><rect y="112" width="204" height="32" fill="#3B2A5E"/><rect x="62" y="40" width="80" height="80" rx="8" fill="none" stroke="#FFF8EA" stroke-width="4" stroke-dasharray="9 7"/><text x="102" y="92" text-anchor="middle" font-family="Lilita One" font-size="38" fill="#FFC23D">?</text></svg></div>
-      <div class="marker" style="font-size:16px;text-align:center">${esc(sc.photo)}</div>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:8px;padding:0 8px">
-      ${[["LIEU 1",sc.lieux[0]],["LIEU 2",sc.lieux[1]],["CRÉNEAU",sc.creneau]].map(([k,v])=>`<div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px dashed #B9A88A;padding-bottom:4px"><div style="font-weight:900;font-size:13px;letter-spacing:1px;color:#6B6355">${k}</div><div class="marker" style="font-size:19px">${f(v)}</div></div>`).join("")}
-    </div>
+  <div class="dropIn" style="--r:-5deg;position:absolute;left:250px;top:478px;width:200px;background:#FFF;border:4px solid ${INK};padding:8px 8px 6px;box-shadow:5px 6px 0 rgba(21,19,31,.35)">
+    <div style="height:86px;background:#2A2048;border:3px solid ${INK};overflow:hidden"><svg aria-hidden="true" width="178" height="80" viewBox="0 0 204 92"><defs><radialGradient id="spot" cx=".5" cy="0" r=".9"><stop offset="0" stop-color="#FF7BD5" stop-opacity=".7"/><stop offset="1" stop-color="#FF7BD5" stop-opacity="0"/></radialGradient></defs><rect width="204" height="92" fill="url(#spot)"/><rect y="70" width="204" height="22" fill="#3B2A5E"/><rect x="76" y="16" width="52" height="52" rx="8" fill="none" stroke="#FFF8EA" stroke-width="4" stroke-dasharray="8 6"/><text x="102" y="54" text-anchor="middle" font-family="Lilita One" font-size="28" fill="#FFC23D">?</text></svg></div>
+    <div class="marker" style="font-size:14px;text-align:center">${esc(sc.photo)}</div>
   </div>
-  <div class="dropIn" style="--r:6deg;position:absolute;left:520px;top:466px;width:150px;height:118px;background:#FFE066;border:3px solid ${INK};box-shadow:4px 6px 0 rgba(21,19,31,.3);padding:12px;box-sizing:border-box;font-family:'Permanent Marker';font-size:16px;line-height:1.25">Les détails qui tuent : heures, couleurs, qui a payé…</div>
-  <div class="lil" style="position:absolute;left:860px;top:470px;font-size:40px;color:#D7262E;border:6px solid #D7262E;border-radius:12px;padding:0 16px;transform:rotate(-14deg);opacity:.85;mix-blend-mode:multiply;letter-spacing:2px">CONFIDENTIEL</div>
+  <div class="fadeIn" style="position:absolute;left:668px;top:120px;width:364px;transform:rotate(1.2deg);display:flex;flex-direction:column;gap:2px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><div class="lil" style="font-size:24px;color:#16213A">L'ALIBI OFFICIEL</div><div class="typew" style="font-size:12px;color:#6B6355">À NE PAS OUBLIER</div></div>
+    ${facts}
+  </div>
   <div style="position:absolute;left:860px;top:590px">${SC.stopwatch()}</div>
   <div style="position:absolute;left:980px;top:604px;display:flex;flex-direction:column">
     <div style="font-weight:900;font-size:14px;letter-spacing:2px;color:#FFE7A8">PRÉPARATION</div>
     <div class="lil tick" data-timer style="font-size:56px;line-height:1;color:#FFF8EA;text-shadow:0 5px 0 ${INK},0 0 24px rgba(255,90,95,.6)">--</div>
   </div>
-  <div style="position:absolute;left:236px;top:626px;display:flex;align-items:center;gap:12px;background:#16213A;color:#FFF8EA;border:4px solid ${INK};border-radius:99px;padding:10px 22px 10px 12px;box-shadow:0 6px 0 ${INK}">
-    <svg aria-hidden="true" width="34" height="34" viewBox="0 0 34 34"><rect x="11" y="3" width="12" height="18" rx="6" fill="#6FD6B8" stroke="#FFF8EA" stroke-width="2.5"/><path d="M6 16 Q6 27 17 27 Q28 27 28 16" fill="none" stroke="#FFF8EA" stroke-width="2.5" stroke-linecap="round"/><line x1="17" y1="27" x2="17" y2="32" stroke="#FFF8EA" stroke-width="2.5"/></svg>
-    <div style="font-weight:900;font-size:18px">Filez en vocal privé avec ${esc(partner ? partner.name : "ton binôme")}</div>
+  <div style="position:absolute;left:236px;top:640px;display:flex;align-items:center;gap:12px;background:#16213A;color:#FFF8EA;border:4px solid ${INK};border-radius:99px;padding:8px 22px 8px 12px;box-shadow:0 6px 0 ${INK}">
+    <svg aria-hidden="true" width="30" height="30" viewBox="0 0 34 34"><rect x="11" y="3" width="12" height="18" rx="6" fill="#6FD6B8" stroke="#FFF8EA" stroke-width="2.5"/><path d="M6 16 Q6 27 17 27 Q28 27 28 16" fill="none" stroke="#FFF8EA" stroke-width="2.5" stroke-linecap="round"/><line x1="17" y1="27" x2="17" y2="32" stroke="#FFF8EA" stroke-width="2.5"/></svg>
+    <div style="font-weight:900;font-size:17px">${playing ? "Filez en vocal privé avec " + esc(partner ? partner.name : "ton binôme") : "Le Duo " + duo + " répète en privé. Vous passez juste après !"}</div>
   </div>
   <div style="position:absolute;right:24px;top:22px;display:flex;flex-direction:column;align-items:flex-end;gap:10px">
-    <button class="btn ${ready?"green":"red"}" data-act="ready" style="font-size:24px">${ready?"✓ PRÊT !":"ON EST PRÊTS"}</button>
+    ${playing ? `<button class="btn ${ready?"green":"red"}" data-act="ready" style="font-size:24px">${ready?"✓ PRÊT !":"ON EST PRÊTS"}</button>`
+              : `<div class="lil" style="font-size:18px;background:#FFC23D;border:4px solid ${INK};border-radius:14px;padding:6px 14px;box-shadow:0 5px 0 ${INK}">TU OBSERVES</div>`}
     <div style="display:flex;gap:6px;background:rgba(21,19,31,.55);padding:6px;border-radius:99px">${readyDots}</div>
     ${isHost() ? `<button class="btn small cream" data-act="next" style="font-size:13px">Lancer l'interrogatoire</button>` : ""}
   </div>`;
@@ -284,20 +286,25 @@ function renderDossier(){
 
 /* Interrogatoire */
 function chipsHtml(){
-  const ps = L.seated(S);
+  const ps = L.members(S, S.turn);
   const chip = p => `<div class="chip" data-chip="${esc(p.id)}"><div class="dot">${A.portrait(p.av, S.signed[p.id]?"smirk":"neutral", 30, 30)}</div>${esc(p.name)}<div class="tag" style="background:${S.signed[p.id]?"#6FD6B8":"#FFC23D"}">${S.signed[p.id]?"SIGNÉ":"TAPE…"}</div></div>`;
-  return `<div id="chipsL" style="position:absolute;left:24px;bottom:18px;display:flex;flex-direction:column;gap:8px">${ps.filter(p=>p.duo==="A").map(chip).join("")}</div>
-          <div id="chipsR" style="position:absolute;right:64px;bottom:18px;display:flex;flex-direction:column;gap:8px;align-items:flex-end">${ps.filter(p=>p.duo==="B").map(chip).join("")}</div>`;
+  const watchers = L.members(S, S.turn==="A"?"B":"A").map(p=>esc(p.name)).join(" & ");
+  return `<div id="chipsL" style="position:absolute;left:24px;bottom:18px;display:flex;flex-direction:column;gap:8px">
+      <div class="lil" style="font-size:14px;color:#FFC23D;text-shadow:0 2px 0 ${INK}">EN INTERROGATOIRE · DUO ${S.turn}</div>${ps.map(chip).join("")}</div>
+    <div class="marker" style="position:absolute;right:64px;bottom:22px;background:#FFF8EA;border:3px solid ${INK};border-radius:10px;padding:4px 12px;font-size:15px;transform:rotate(-2deg)">Derrière le miroir : ${watchers}</div>`;
 }
 function renderInterro(){
-  const duo = myDuo(), qt = questionText(S.round, S.q, duo), signed = !!S.signed[myId];
+  const duo = S.turn, qt = questionText(S.round, S.q, duo), signed = !!S.signed[myId];
+  const playing = me() && me().duo === duo;
   const dots = Array.from({length:10},(_,i)=> i===S.q
       ? `<div class="lil" style="width:30px;height:30px;border-radius:50%;background:#FFC23D;border:4px solid ${INK};display:flex;align-items:center;justify-content:center;font-size:16px">${i+1}</div>`
       : `<div style="width:22px;height:22px;border-radius:50%;background:${i<S.q?"#6FD6B8":"#2E4650"};border:3px solid ${INK}"></div>`).join("");
-  const highlight = esc(qt).replace(new RegExp("("+L.duoNames(S,duo).A.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"|"+L.duoNames(S,duo).B.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","g"), `<span style="color:#FF5A5F">$1</span>`);
-  return SC.room() + `
-  <div style="position:absolute;left:30px;top:22px"><div class="lil" style="font-size:20px;background:#FFC23D;border:4px solid ${INK};border-radius:12px;padding:2px 14px;box-shadow:0 4px 0 ${INK}">MANCHE ${S.round+1}</div></div>
-  <div style="position:absolute;left:200px;top:26px;display:flex;gap:7px;align-items:center">${dots}</div>
+  const nm = L.duoNames(S,duo), rx = x => x.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+  const highlight = esc(qt).replace(new RegExp("("+rx(esc(nm.A))+"|"+rx(esc(nm.B))+")","g"), `<span style="color:#FF5A5F">$1</span>`);
+  const mirror = playing ? "LE DUO " + (duo==="A"?"B":"A") + " OBSERVE" : "TOI, TU OBSERVES";
+  return SC.room(mirror) + `
+  <div style="position:absolute;left:30px;top:22px"><div class="lil" style="font-size:20px;background:#FFC23D;border:4px solid ${INK};border-radius:12px;padding:2px 14px;box-shadow:0 4px 0 ${INK}">MANCHE ${S.round+1} · DUO ${duo}</div></div>
+  <div style="position:absolute;left:270px;top:26px;display:flex;gap:7px;align-items:center">${dots}</div>
   <div class="popIn" style="position:absolute;left:380px;top:96px;width:460px">
     <div style="position:relative;background:#FFF8EA;border:6px solid ${INK};border-radius:34px;padding:22px 30px 26px;box-shadow:0 8px 0 ${INK}">
       <div style="display:flex;align-items:center;gap:10px"><div class="marker" style="font-size:18px;color:#2F5DA8">Inspecteur Moustache</div><div style="height:3px;flex:1;background:#E9DFCB"></div>
@@ -312,12 +319,16 @@ function renderInterro(){
     <div class="lil" id="tnum" data-timer style="font-size:46px;color:#FF5A5F;line-height:1;text-shadow:0 0 18px rgba(255,90,95,.7);min-width:56px;text-align:center">--</div>
     <div style="font-weight:900;font-size:13px;color:#C9D2E3;margin-left:4px">SEC</div>
   </div>
+  ${playing ? `
   <form id="ansForm" style="position:absolute;left:486px;top:478px;width:330px;display:flex;flex-direction:column;gap:4px">
     <label for="answer" style="font-weight:900;font-size:12px;letter-spacing:2px;color:#8A8172">TA DÉPOSITION · SECRÈTE</label>
     <input id="answer" type="text" maxlength="80" autocomplete="off" ${signed?"disabled":""} placeholder="${signed?"":"Tape ta réponse…"}" value="${signed?esc(myAnswers[S.round+"-"+S.q]||"Déposition signée"):""}" style="font-family:'Special Elite',monospace;font-size:20px;background:transparent;border:none;border-bottom:3px solid ${INK};padding:2px 0;color:${INK};outline:none">
   </form>
   <button type="button" data-act="sign" id="signBtn" ${signed?"disabled":""} style="position:absolute;left:880px;top:470px;width:130px;height:130px;border-radius:50%;font-family:'Lilita One';font-size:26px;letter-spacing:1px;background:${signed?"#6B6355":"#2EA35A"};color:#FFF8EA;border:6px solid ${INK};box-shadow:0 8px 0 ${INK},inset 0 -8px 0 rgba(0,0,0,.18);transform:rotate(-8deg)">${signed?"SIGNÉ ✓":"SIGNER"}</button>
-  ${signed ? `<div class="lil stampIn" style="--r:-12deg;position:absolute;left:560px;top:500px;font-size:40px;color:#2EA35A;border:6px solid #2EA35A;border-radius:12px;padding:0 14px;background:rgba(255,255,255,.6);animation-delay:0s">SIGNÉ</div>` : ""}
+  ${signed ? `<div class="lil stampIn" style="--r:-12deg;position:absolute;left:560px;top:500px;font-size:40px;color:#2EA35A;border:6px solid #2EA35A;border-radius:12px;padding:0 14px;background:rgba(255,255,255,.6);animation-delay:0s">SIGNÉ</div>` : ""}`
+  : `<div style="position:absolute;left:486px;top:480px;width:330px;display:flex;flex-direction:column;gap:6px">
+    <div style="font-weight:900;font-size:12px;letter-spacing:2px;color:#8A8172">PROCÈS-VERBAL EN COURS</div>
+    <div class="typew" style="font-size:17px;line-height:1.35">Le Duo ${duo} est sur le grill. Toi, tu observes derrière le miroir… et tu notes leurs hésitations.</div></div>`}
   <div id="chips">${chipsHtml()}</div>`;
 }
 function patchInterro(){
@@ -330,7 +341,7 @@ function patchInterro(){
 const LINES_OK = ["Hmm… ça colle. Pour l'instant.","Bien répété, les loulous.","Mêmes versions. Suspect.","Je note. Concordant."];
 const LINES_KO = ["Tiens tiens… intéressant.","Quelqu'un ment dans cette pièce.","Ah. Ça ne colle pas du tout.","Je le savais !"];
 function renderReveal(){
-  const {q, duo} = L.stepInfo(S.ridx), m = L.members(S, duo), ans = S.answers[S.round+"-"+q] || {};
+  const {q, duo} = L.stepInfo(S.ridx, S), m = L.members(S, duo), ans = S.answers[S.round+"-"+q] || {};
   const ok = L.matchOf(S, S.round, q, duo), sc = L.scores(S).total;
   const k = S.round+"-"+q+"-"+duo, over = k in S.overrides;
   const canOverride = isHost() || (me() && me().duo && me().duo !== duo);
@@ -443,10 +454,10 @@ function modalHtml(){
   if(modal === "worst"){
     const rows = [];
     for(let r=0;r<3;r++) for(let q=0;q<10;q++) for(const duo of ["A","B"]){
-      if(!L.scenOf(S,r)) continue;
+      if(!L.scenOf(S,r,duo)) continue;
       const m = L.members(S,duo), a = S.answers[r+"-"+q]||{};
       if(m.length<2 || L.matchOf(S,r,q,duo)) continue;
-      rows.push(`<div style="border-bottom:2px dashed #B9A88A;padding:10px 0"><div style="font-weight:900;font-size:14px;color:#6B6355">DUO ${duo} · ${esc(L.scenOf(S,r).titre)} · ${esc(questionText(r,q,duo))}</div>
+      rows.push(`<div style="border-bottom:2px dashed #B9A88A;padding:10px 0"><div style="font-weight:900;font-size:14px;color:#6B6355">DUO ${duo} · ${esc(L.scenOf(S,r,duo).titre)} · ${esc(questionText(r,q,duo))}</div>
         <div style="display:flex;gap:20px;margin-top:4px"><div class="typew" style="flex:1;font-size:18px"><b>${esc(m[0].name)}</b> : « ${esc(a[m[0].id]||"…")} »</div><div class="typew" style="flex:1;font-size:18px"><b>${esc(m[1].name)}</b> : « ${esc(a[m[1].id]||"…")} »</div></div></div>`);
     }
     return `<div class="modal"><div class="sheet popIn" style="width:900px;display:flex;flex-direction:column;gap:6px">
@@ -493,7 +504,7 @@ stage.addEventListener("click", e => {
     case "ready": act({type:"ready"}); break;
     case "next": act({type:"next"}); break;
     case "sign": submit(); break;
-    case "repeat": AU.speak(questionText(S.round, S.q, myDuo())); break;
+    case "repeat": AU.speak(questionText(S.round, S.q, S.turn)); break;
     case "override": act({type:"override", idx:S.ridx}); break;
     case "rematch": act({type:"rematch"}); break;
     case "worst": modal = "worst"; render(); break;

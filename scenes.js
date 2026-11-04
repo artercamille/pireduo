@@ -99,7 +99,7 @@ function stopwatch(){
   return `<svg aria-hidden="true" width="110" height="122" viewBox="0 0 110 122"><rect x="44" width="22" height="14" rx="3" fill="#C9D2E3" stroke="${INK}" stroke-width="4"/><rect x="49" y="12" width="12" height="10" fill="#C9D2E3" stroke="${INK}" stroke-width="4"/><circle cx="55" cy="70" r="48" fill="#FF5A5F" stroke="${INK}" stroke-width="6"/><circle cx="55" cy="70" r="37" fill="#FFF8EA" stroke="${INK}" stroke-width="4"/><g class="spin"><circle cx="55" cy="70" r="34" fill="none"/><line x1="55" y1="70" x2="55" y2="40" stroke="${INK}" stroke-width="5" stroke-linecap="round"/></g><circle cx="55" cy="70" r="6" fill="${INK}"/></svg>`;
 }
 
-function room(){
+function room(label){
   return `<svg class="layer" width="1280" height="720" viewBox="0 0 1280 720" aria-hidden="true"><defs>
     <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3E5A66"/><stop offset="1" stop-color="#5E8089"/></linearGradient>
     <pattern id="tiles" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="#8FC7B3"/><rect x="2" y="2" width="36" height="36" rx="3" fill="#A6D8C5"/><path d="M6 8 L14 8" stroke="#D8F2E8" stroke-width="3" stroke-linecap="round"/></pattern>
@@ -119,7 +119,7 @@ function room(){
       <g fill="#FFF8EA" opacity=".9" class="blink" style="animation-delay:1.7s"><circle cx="108" cy="186" r="5"/><circle cx="132" cy="186" r="5"/><circle cx="238" cy="196" r="5"/><circle cx="262" cy="196" r="5"/></g>
       <path d="M20 20 L120 20 L20 140 Z" fill="#FFF" opacity=".08"/><line x1="40" y1="40" x2="140" y2="0" stroke="#FFF" stroke-width="6" opacity=".12"/>
       <rect x="110" y="330" width="140" height="26" rx="4" fill="#C9D2E3" stroke="${INK}" stroke-width="3"/>
-      <text x="180" y="349" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="13" fill="${INK}" id="mirrorLabel">L'AUTRE DUO OBSERVE</text>
+      <text x="180" y="349" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="13" fill="${INK}" >${label || "L'AUTRE DUO OBSERVE"}</text>
     </g>
     <g class="swing">
       <polygon points="512,124 568,124 830,600 250,600" fill="url(#cone)" style="mix-blend-mode:screen"/>
