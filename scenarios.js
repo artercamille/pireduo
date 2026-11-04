@@ -10,7 +10,7 @@ window.SCENARIOS = [
     "Pendant le film, **{B}** a eu un énorme **fou rire** au pire moment. Toute la salle s'est retournée.",
     "En sortant, vous mouriez de faim : direction le **fast-food** le plus proche.",
     "Vous êtes rentrés chacun chez vous un peu après **minuit**."],
-  questions:["Quel film êtes-vous allés voir ?","Dans quelle salle avez-vous finalement vu le film ?","Pourquoi {B} a-t-il eu un fou rire ?","Qu'a mangé {A} pendant le film ?","Comment êtes-vous allés du ciné au fast-food ?","Qu'a commandé {B} au fast-food ?","Combien a coûté l'addition au fast-food ?","Qui a payé le fast-food ?","Comment {A} est-il rentré chez lui ?","Qui a fait tomber quelque chose pendant la soirée ?"]},
+  questions:["Quel film êtes-vous allés voir ?","Dans quelle salle avez-vous finalement vu le film ?","Pourquoi {B} a-t-il eu un fou rire ?","Qu'a mangé {A} pendant le film ?","Comment êtes-vous allés du ciné au fast-food ?","Qu'a commandé {B} au fast-food ?","Combien a coûté l'addition au fast-food ?","Où vous êtes-vous assis dans le fast-food ?","Comment {A} est-il rentré chez lui ?","Qu'est-ce qui est tombé par terre pendant la soirée ?"]},
 { id:"mariage", titre:"Le gâteau du mariage", heure:"Samedi, 17h15", photo:"La pièce montée, avant",
   pitch:"La pièce montée du mariage de la cousine Sandrine a été entamée à la main. Du sable a été retrouvé près du buffet.",
   recit:[
@@ -19,7 +19,7 @@ window.SCENARIOS = [
     "Sur place, vous vous êtes installés à côté d'une famille qui jouait à la **pétanque**.",
     "Vers 16h, vous avez fait la queue **20 minutes** pour une glace.",
     "En repartant, **{B}** avait le nez rouge comme une tomate."],
-  questions:["Sur quelle plage étiez-vous ?","Pourquoi le scooter a-t-il calé ?","Qui a porté le parasol ?","Combien de fois {A} s'est-il baigné ?","Que s'est-il passé avec la famille qui jouait à la pétanque ?","Quel parfum de glace a pris {B} ?","Combien ont coûté les glaces ?","Quel morceau passait sur votre enceinte ?","Qu'avez-vous oublié sur la plage ?","À quelle heure êtes-vous repartis ?"]},
+  questions:["Sur quelle plage étiez-vous ?","Pourquoi le scooter a-t-il calé ?","De quelle couleur était votre parasol ?","Combien de fois {A} s'est-il baigné ?","Que s'est-il passé avec la famille qui jouait à la pétanque ?","Quel parfum de glace a pris {B} ?","Combien ont coûté les glaces ?","Quel morceau passait sur votre enceinte ?","Qu'avez-vous oublié sur la plage ?","À quelle heure êtes-vous repartis ?"]},
 { id:"bowling", titre:"La boule de bowling", heure:"Vendredi, 22h10", photo:"La vitrine de la boulangerie",
   pitch:"Une boule de bowling n°12 a traversé la vitrine d'une boulangerie à 22h10.",
   recit:[
@@ -28,7 +28,7 @@ window.SCENARIOS = [
     "La partie s'est jouée au **dernier lancer**, dans une ambiance très tendue.",
     "Ensuite, vous êtes allés chez **{A}** pour jouer à la console.",
     "La soirée s'est finie quand le voisin a tapé au **mur**."],
-  questions:["Sur quelle piste avez-vous joué ?","Quelle pointure a dû prendre {B} ?","Quel pseudo {A} a-t-il mis à l'écran ?","Qui a gagné la partie ?","Avec quel score ?","Qu'avez-vous bu au bar du bowling ?","À quel jeu avez-vous joué chez {A} ?","Pourquoi le voisin a-t-il tapé au mur ?","Qu'avez-vous mangé chez {A} ?","Comment {B} est-il rentré chez lui ?"]},
+  questions:["Sur quelle piste avez-vous joué ?","Quelle pointure a dû prendre {B} ?","Quel pseudo {A} a-t-il mis à l'écran ?","Quel était le score de {B} ?","Avec quel score ?","Qu'avez-vous bu au bar du bowling ?","À quel jeu avez-vous joué chez {A} ?","Pourquoi le voisin a-t-il tapé au mur ?","Qu'avez-vous mangé chez {A} ?","Comment {B} est-il rentré chez lui ?"]},
 { id:"pizza", titre:"Le livreur disparu", heure:"Mardi, 20h50", photo:"Le scooter abandonné",
   pitch:"Un livreur de pizza est reparti en courant et a laissé son scooter devant votre immeuble.",
   recit:[
@@ -37,7 +37,7 @@ window.SCENARIOS = [
     "Il a sonné pile au moment d'une **occasion de but**. Vous avez raté l'action.",
     "À la mi-temps, **{A}** est descendu à la supérette en bas de l'immeuble.",
     "Vous avez fini la soirée en **désaccord** sur le meilleur joueur du match."],
-  questions:["À quel étage habite {B} ?","Quel match regardiez-vous ?","Quel était le score final ?","Quelles pizzas avez-vous commandées ?","Qui a ouvert la porte au livreur ?","Qui a payé les pizzas ?","Qu'est-ce que {A} est allé acheter à la supérette ?","Qui était le meilleur joueur selon {B} ?","Qui a renversé quelque chose ?","Comment {A} est-il rentré chez lui ?"]},
+  questions:["À quel étage habite {B} ?","Quel match regardiez-vous ?","Quel était le score final ?","Quelles pizzas avez-vous commandées ?","Qu'a dit le livreur en arrivant ?","Combien ont coûté les pizzas ?","Qu'est-ce que {A} est allé acheter à la supérette ?","Qui était le meilleur joueur selon {B} ?","Qu'est-ce qui a été renversé sur le canapé ?","Comment {A} est-il rentré chez lui ?"]},
 { id:"zoo", titre:"Le lama évadé", heure:"Dimanche, 11h30", photo:"L'enclos vide",
   pitch:"Un lama s'est échappé du zoo et broute dans le parking. Son enclos a été ouvert de l'intérieur.",
   recit:[
@@ -46,7 +46,7 @@ window.SCENARIOS = [
     "Dans le **vivarium**, {B} a crié si fort qu'un gardien est venu voir.",
     "Vers 10h40, vous avez pris une **photo avec le lama**. Il a fait quelque chose de dégoûtant.",
     "Vous êtes repartis avec un **souvenir** acheté à la boutique."],
-  questions:["Quel animal {A} voulait-il absolument voir ?","Par quelle porte êtes-vous entrés ?","Pourquoi {B} a-t-il crié dans le vivarium ?","Qu'a fait le lama pendant la photo ?","Qu'avez-vous mangé à midi ?","Quel animal avez-vous vu en premier ?","Qu'avez-vous acheté à la boutique ?","Qui l'a payé ?","Quel temps faisait-il ?","Combien coûtait l'entrée ?"]},
+  questions:["Quel animal {A} voulait-il absolument voir ?","Par quelle porte êtes-vous entrés ?","Pourquoi {B} a-t-il crié dans le vivarium ?","Qu'a fait le lama pendant la photo ?","Qu'avez-vous mangé à midi ?","Quel animal avez-vous vu en premier ?","Qu'avez-vous acheté à la boutique ?","Combien a-t-il coûté ?","Quel temps faisait-il ?","Combien coûtait l'entrée ?"]},
 { id:"salle", titre:"Les haltères volés", heure:"Lundi, 18h20", photo:"Le rack vide",
   pitch:"Trois paires d'haltères ont disparu de la salle de sport à 18h20. La caméra du vestiaire était débranchée.",
   recit:[
@@ -55,7 +55,7 @@ window.SCENARIOS = [
     "Au squat, **{A}** a battu son record personnel. Il a hurlé dans toute la salle.",
     "Au milieu de la séance, **{B}** a dû s'asseoir **10 minutes** sur un banc.",
     "Vous avez fini au **bar à smoothies** d'à côté."],
-  questions:["Comment s'appelle la salle ?","Comment s'appelait le coach ?","Que vous a-t-il reproché ?","Quel est le nouveau record de {A} au squat ?","Pourquoi {B} a-t-il dû s'asseoir ?","Quel exercice avez-vous fait en dernier ?","Qu'a pris {A} comme smoothie ?","Qui a payé les smoothies ?","Quelle musique passait dans la salle ?","Qui a oublié quelque chose aux vestiaires ?"]},
+  questions:["Comment s'appelle la salle ?","Comment s'appelait le coach ?","Que vous a-t-il reproché ?","Quel est le nouveau record de {A} au squat ?","Pourquoi {B} a-t-il dû s'asseoir ?","Quel exercice avez-vous fait en dernier ?","Qu'a pris {A} comme smoothie ?","Combien coûtaient les smoothies ?","Quelle musique passait dans la salle ?","Qu'est-ce qui a été oublié aux vestiaires ?"]},
 { id:"concert", titre:"Le micro du rappeur", heure:"Jeudi, 23h55", photo:"La scène, après",
   pitch:"Le micro en or du rappeur a disparu à la fin du concert. Le voleur portait un t-shirt de la tournée.",
   recit:[
@@ -64,7 +64,7 @@ window.SCENARIOS = [
     "Dans la fosse, **{A}** a été porté par la foule pendant tout un morceau.",
     "**{B}** a acheté un **t-shirt** de la tournée. Oui, comme le voleur.",
     "Après le concert, vous avez fini au **kebab** d'à côté, sans voix."],
-  questions:["Quel artiste avez-vous vu ?","Que vous a raconté l'inconnu de la file ?","Sur quel morceau {A} a-t-il été porté par la foule ?","De quelle couleur est le t-shirt de {B} ?","Combien il a coûté ?","Quel morceau a été joué en dernier ?","Qu'a pris {A} au kebab ?","Quelle sauce a pris {B} ?","Comment êtes-vous rentrés ?","Qui a filmé le plus pendant le concert ?"]},
+  questions:["Quel artiste avez-vous vu ?","Que vous a raconté l'inconnu de la file ?","Sur quel morceau {A} a-t-il été porté par la foule ?","De quelle couleur est le t-shirt de {B} ?","Combien il a coûté ?","Quel morceau a été joué en dernier ?","Qu'a pris {A} au kebab ?","Quelle sauce a pris {B} ?","Comment êtes-vous rentrés ?","Quel morceau avez-vous filmé ?"]},
 { id:"ski", titre:"La dameuse en balade", heure:"Mercredi, 16h00", photo:"Traces suspectes…",
   pitch:"Une dameuse a été retrouvée devant la mairie de la station à 16h. Ses clés étaient au chalet-restaurant.",
   recit:[
@@ -73,7 +73,7 @@ window.SCENARIOS = [
     "À midi, vous avez mangé au **chalet-restaurant** (oui, celui des clés).",
     "L'après-midi, **{A}** a voulu tenter une piste **noire**. Mauvaise idée.",
     "Vous avez fini la journée avec un **chocolat chaud**, épuisés."],
-  questions:["Sur quelle piste avez-vous commencé ?","Qu'est-ce qui est tombé du télésiège ?","Qui l'a fait tomber ?","De quelle couleur était la combinaison de {B} ?","Qu'avez-vous mangé à midi ?","Que s'est-il passé sur la piste noire ?","Combien de fois {B} est-il tombé ?","Quel moniteur avez-vous croisé ?","Combien coûtait le chocolat chaud ?","À quelle heure avez-vous quitté les pistes ?"]},
+  questions:["Sur quelle piste avez-vous commencé ?","Qu'est-ce qui est tombé du télésiège ?","Comment avez-vous récupéré l'objet ?","De quelle couleur était la combinaison de {B} ?","Qu'avez-vous mangé à midi ?","Que s'est-il passé sur la piste noire ?","Combien de fois {B} est-il tombé ?","Quel moniteur avez-vous croisé ?","Combien coûtait le chocolat chaud ?","À quelle heure avez-vous quitté les pistes ?"]},
 { id:"anniv", titre:"Le clown kidnappé", heure:"Samedi, 15h30", photo:"Le nez rouge abandonné",
   pitch:"Le clown de l'anniversaire du petit Kylian a disparu en plein spectacle. Son nez rouge a été retrouvé au parc.",
   recit:[
@@ -91,7 +91,7 @@ window.SCENARIOS = [
     "Pendant le vol, **{B}** a eu un souci avec son voisin.",
     "Au tapis 4, une de vos valises est sortie **la toute dernière**.",
     "Vous êtes rentrés en **taxi** avec un chauffeur très bavard."],
-  questions:["D'où reveniez-vous ?","Avec quelle compagnie avez-vous voyagé ?","Où était assis {A} dans l'avion ?","Quel souci {B} a-t-il eu avec son voisin ?","Quelle valise est sortie en dernier ?","De quelle couleur est la valise de {A} ?","Quel souvenir avez-vous ramené ?","De quoi vous a parlé le chauffeur de taxi ?","Combien a coûté le taxi ?","Où avez-vous dormi pendant le week-end ?"]},
+  questions:["D'où reveniez-vous ?","Avec quelle compagnie avez-vous voyagé ?","Où était assis {A} dans l'avion ?","Quel souci {B} a-t-il eu avec son voisin ?","Combien de temps avez-vous attendu la dernière valise ?","De quelle couleur est la valise de {A} ?","Quel souvenir avez-vous ramené ?","De quoi vous a parlé le chauffeur de taxi ?","Combien a coûté le taxi ?","Où avez-vous dormi pendant le week-end ?"]},
 { id:"musee", titre:"La Joconde en carton", heure:"Vendredi, 14h45", photo:"Salle 7, le cadre",
   pitch:"La reproduction géante de La Joconde a été remplacée par un dessin au feutre. Des miettes de cookie traînaient salle 7.",
   recit:[
@@ -100,7 +100,7 @@ window.SCENARIOS = [
     "En salle 3, **{A}** s'est fait reprendre par un **gardien**.",
     "Vous avez fait une pause à la **cafétéria**. D'où les miettes, peut-être.",
     "Avant de partir, vous êtes passés à la **boutique**."],
-  questions:["Combien coûtait l'entrée ?","Quelle salle avez-vous visitée en premier ?","Pourquoi le gardien a-t-il repris {A} ?","Quelle œuvre {B} a-t-il préférée ?","Qu'avez-vous pris à la cafétéria ?","Combien de temps êtes-vous restés devant La Joconde ?","Qu'avez-vous acheté à la boutique ?","Qui l'a payé ?","Quel temps faisait-il en sortant ?","Qui voulait partir le premier ?"]},
+  questions:["Combien coûtait l'entrée ?","Quelle salle avez-vous visitée en premier ?","Pourquoi le gardien a-t-il repris {A} ?","Quelle œuvre {B} a-t-il préférée ?","Qu'avez-vous pris à la cafétéria ?","Combien de temps êtes-vous restés devant La Joconde ?","Qu'avez-vous acheté à la boutique ?","Combien a-t-il coûté ?","Quel temps faisait-il en sortant ?","Combien de temps a duré la visite ?"]},
 { id:"camping", titre:"La tente en feu", heure:"Samedi, 2h10", photo:"Emplacement 42",
   pitch:"La tente du voisin a pris feu à 2h10 au camping « Les Flots Bleus ». Le feu est parti d'un barbecue mal éteint.",
   recit:[
@@ -109,7 +109,7 @@ window.SCENARIOS = [
     "Le soir, **{A}** s'est occupé du **barbecue**.",
     "**{B}** a voulu raconter une **histoire qui fait peur**. Personne n'a eu peur.",
     "À **minuit**, tout le monde était couché. Soi-disant."],
-  questions:["Contre qui avez-vous joué à la pétanque ?","Pourquoi ça s'est mal fini ?","Quel était le score ?","Qu'avez-vous fait cuire au barbecue ?","Qui a éteint le barbecue ?","Quelle histoire {B} a-t-il racontée ?","Qu'a bu {A} ?","De quelle couleur est votre tente ?","Qui ronfle ?","Quel bruit vous a réveillés pendant la nuit ?"]},
+  questions:["Contre qui avez-vous joué à la pétanque ?","Pourquoi ça s'est mal fini ?","Quel était le score ?","Qu'avez-vous fait cuire au barbecue ?","Avec quoi avez-vous éteint le barbecue ?","Quelle histoire {B} a-t-il racontée ?","Qu'a bu {A} ?","De quelle couleur est votre tente ?","Comment s'appelaient vos voisins de tente ?","Quel bruit vous a réveillés pendant la nuit ?"]},
 { id:"mairie", titre:"La statue maquillée", heure:"Lundi, 6h30", photo:"Monsieur le Maire, ce matin",
   pitch:"La statue du maire, au milieu du parc, a été retrouvée maquillée et coiffée d'une perruque.",
   recit:[
@@ -118,7 +118,7 @@ window.SCENARIOS = [
     "Vous avez fait le tour du **parc**, en passant devant la statue sans rien remarquer.",
     "En route, **{A}** a dû s'arrêter à cause d'un **chien**.",
     "Vous avez fini à la **boulangerie**, avec plus de calories qu'au départ."],
-  questions:["À quelle heure aviez-vous rendez-vous ?","Pourquoi {B} était-il en retard ?","Combien de tours du parc avez-vous faits ?","Que s'est-il passé avec le chien ?","Qu'écoutait {A} en courant ?","Comment s'appelle la boulangerie ?","Qu'avez-vous acheté ?","Combien de croissants a mangé {B} ?","Qui a payé ?","Qui était devant pendant la course ?"]},
+  questions:["À quelle heure aviez-vous rendez-vous ?","Pourquoi {B} était-il en retard ?","Combien de tours du parc avez-vous faits ?","Que s'est-il passé avec le chien ?","Qu'écoutait {A} en courant ?","Comment s'appelle la boulangerie ?","Qu'avez-vous acheté ?","Combien de croissants a mangé {B} ?","Combien avez-vous dépensé à la boulangerie ?","Quelle tenue portait {B} ?"]},
 { id:"escape", titre:"L'escape game vidé", heure:"Mercredi, 21h20", photo:"Le cadenas ouvert",
   pitch:"Toutes les clés de l'escape game « Le Bunker » ont disparu à 21h20, juste après le dernier groupe.",
   recit:[
@@ -127,7 +127,7 @@ window.SCENARIOS = [
     "À un moment, **{A}** a eu tellement peur qu'il a voulu **abandonner**.",
     "C'est finalement **{B}** qui a trouvé le **dernier code**, par hasard.",
     "Pour fêter ça, vous êtes allés boire un **bubble tea**."],
-  questions:["Quel était le thème de la salle ?","Comment s'appelait le game master ?","Qu'est-ce qui a fait peur à {A} ?","Combien d'indices avez-vous demandés ?","Quel était le dernier code ?","Comment {B} l'a-t-il trouvé ?","En combien de temps êtes-vous sortis ?","Quel bubble tea a pris {A} ?","Qui a payé les bubble teas ?","Qu'avez-vous cassé dans la salle ?"]},
+  questions:["Quel était le thème de la salle ?","Comment s'appelait le game master ?","Qu'est-ce qui a fait peur à {A} ?","Combien d'indices avez-vous demandés ?","Quel était le dernier code ?","Comment {B} l'a-t-il trouvé ?","En combien de temps êtes-vous sortis ?","Quel bubble tea a pris {A} ?","Quel bubble tea a pris {B} ?","Qu'avez-vous cassé dans la salle ?"]},
 { id:"restau", titre:"Le homard en cavale", heure:"Samedi, 21h00", photo:"L'aquarium",
   pitch:"Un homard vivant a disparu de l'aquarium d'un restaurant chic à 21h. Il a été retrouvé dans le port.",
   recit:[
@@ -136,7 +136,7 @@ window.SCENARIOS = [
     "Le **serveur** s'est trompé dans vos commandes, deux fois.",
     "**{A}** a fait une grosse **tache** sur ses vêtements.",
     "Après le dessert, vous êtes allés marcher sur le **port**."],
-  questions:["Quelle bonne nouvelle fêtiez-vous ?","Quel prénom {A} a-t-il donné au homard ?","Comment s'appelait le serveur ?","Qu'est-ce qu'il a mal servi ?","Qu'a pris {B} en plat ?","Avec quoi {A} s'est-il taché ?","Quel dessert avez-vous pris ?","Combien a coûté le repas ?","Qui a payé ?","Qu'avez-vous vu sur le port ?"]},
+  questions:["Quelle bonne nouvelle fêtiez-vous ?","Quel prénom {A} a-t-il donné au homard ?","Comment s'appelait le serveur ?","Qu'est-ce qu'il a mal servi ?","Qu'a pris {B} en plat ?","Avec quoi {A} s'est-il taché ?","Quel dessert avez-vous pris ?","Combien a coûté le repas ?","Combien avez-vous laissé de pourboire ?","Qu'avez-vous vu sur le port ?"]},
 { id:"foot", titre:"Les filets du stade", heure:"Dimanche, 17h45", photo:"Cage nord",
   pitch:"Les filets des cages du stade ont disparu à 17h45. Ils ont été retrouvés dans un sac de sport.",
   recit:[
@@ -145,7 +145,7 @@ window.SCENARIOS = [
     "**{B}** a marqué un but **incroyable**… contre son camp.",
     "Le match s'est fini sur une **dispute** à propos du dernier but.",
     "Vous êtes repartis avec un **sac de sport**. Le ballon était dedans, promis."],
-  questions:["Sur quel terrain avez-vous joué ?","Qui {A} a-t-il appelé en urgence ?","De quelle couleur étaient vos chasubles ?","Comment {B} a-t-il marqué contre son camp ?","Quel était le score final ?","Pourquoi le dernier but a-t-il fait débat ?","Qui était gardien ?","Qu'a bu {A} à la buvette ?","À qui appartient le sac de sport ?","Qui s'est blessé ?"]},
+  questions:["Sur quel terrain avez-vous joué ?","Qui {A} a-t-il appelé en urgence ?","De quelle couleur étaient vos chasubles ?","Comment {B} a-t-il marqué contre son camp ?","Quel était le score final ?","Pourquoi le dernier but a-t-il fait débat ?","Qui jouait dans l'équipe adverse ?","Qu'a bu {A} à la buvette ?","À qui appartient le sac de sport ?","Combien de temps a duré le match ?"]},
 { id:"cinema2", titre:"La bobine du film", heure:"Jeudi, 20h15", photo:"Le projecteur",
   pitch:"La bobine d'un film culte a été volée à 20h15 pendant la projection en plein air, sur la plage.",
   recit:[
@@ -154,7 +154,7 @@ window.SCENARIOS = [
     "Vous avez mangé au **food-truck** : la file était interminable.",
     "Pendant le film, **{B}** s'est **endormi** et a ronflé.",
     "Vous êtes rentrés à **vélo**, avec un seul phare pour deux."],
-  questions:["Quel film était projeté ?","Qu'est-ce que {A} avait ramené pour s'asseoir ?","Qu'avez-vous pris au food-truck ?","Combien de temps avez-vous attendu ?","À quel moment du film {B} s'est-il endormi ?","Qui l'a réveillé ?","Quelle scène {A} a-t-il préférée ?","Combien de personnes il y avait ?","Qui avait le vélo avec le phare ?","Par où êtes-vous rentrés ?"]},
+  questions:["Quel film était projeté ?","Qu'est-ce que {A} avait ramené pour s'asseoir ?","Qu'avez-vous pris au food-truck ?","Combien de temps avez-vous attendu ?","À quel moment du film {B} s'est-il endormi ?","Comment a-t-on réveillé {B} ?","Quelle scène {A} a-t-il préférée ?","Combien de personnes il y avait ?","De quelle couleur est le vélo de {A} ?","Par où êtes-vous rentrés ?"]},
 { id:"jardinerie", titre:"Le nain de jardin", heure:"Samedi, 10h20", photo:"Le socle vide",
   pitch:"Le nain de jardin géant de la jardinerie a été retrouvé au sommet d'un rond-point. Il fallait une voiture pour le transporter.",
   recit:[
@@ -163,7 +163,7 @@ window.SCENARIOS = [
     "À la **jardinerie**, {B} a voulu acheter une plante **beaucoup trop grande**.",
     "Au magasin de meubles, **{A}** s'est endormi dans un **canapé d'exposition**.",
     "Vous avez mangé au **resto du magasin** avant de rentrer."],
-  questions:["Quelle voiture a {A} ?","Quel bruit faisait-elle ?","Quelle plante {B} voulait-il acheter ?","L'avez-vous achetée ?","Combien de temps {A} a-t-il dormi dans le canapé ?","Qui l'a réveillé ?","Quel meuble avez-vous acheté ?","Qu'avez-vous mangé au resto du magasin ?","Combien avez-vous dépensé au total ?","Où vous êtes-vous garés ?"]},
+  questions:["Quelle voiture a {A} ?","Quel bruit faisait-elle ?","Quelle plante {B} voulait-il acheter ?","Combien coûtait cette plante ?","Combien de temps {A} a-t-il dormi dans le canapé ?","Comment a-t-on réveillé {A} ?","Quel meuble avez-vous acheté ?","Qu'avez-vous mangé au resto du magasin ?","Combien avez-vous dépensé au total ?","Où vous êtes-vous garés ?"]},
 { id:"tennis", titre:"Le trophée du tournoi", heure:"Dimanche, 12h30", photo:"La vitrine du club",
   pitch:"Le trophée du tournoi du club a disparu de la vitrine du club-house à 12h30.",
   recit:[
@@ -172,7 +172,7 @@ window.SCENARIOS = [
     "Le match a duré **3 sets** et s'est joué sur une **balle litigieuse**.",
     "**{A}** a fait une **célébration** que personne n'a appréciée.",
     "Vous avez déjeuné au **club-house**, à deux mètres de la vitrine."],
-  questions:["Contre qui avez-vous joué ?","Qu'a cassé {B} à l'échauffement ?","Quel était le score ?","Sur quelle balle y a-t-il eu litige ?","Qui avait raison ?","Quelle célébration {A} a-t-il faite ?","Sur quel court avez-vous joué ?","Qu'avez-vous mangé au club-house ?","Qui a payé le déjeuner ?","Qui servait en premier ?"]},
+  questions:["Contre qui avez-vous joué ?","Qu'a cassé {B} à l'échauffement ?","Quel était le score ?","Sur quelle balle y a-t-il eu litige ?","Comment le litige s'est-il réglé ?","Quelle célébration {A} a-t-il faite ?","Sur quel court avez-vous joué ?","Qu'avez-vous mangé au club-house ?","Combien a coûté le déjeuner ?","De quelle couleur était la tenue de {A} ?"]},
 { id:"fete", titre:"La fête des voisins", heure:"Vendredi, 0h20", photo:"La piscine",
   pitch:"La sono de la fête des voisins a été jetée dans la piscine à 0h20.",
   recit:[
@@ -181,7 +181,7 @@ window.SCENARIOS = [
     "**{A}** a passé une heure à discuter avec le **voisin le plus bizarre** de l'immeuble.",
     "**{B}** a pris le contrôle de la **musique**. Mauvaise idée.",
     "Vous êtes partis à **minuit pile**, soi-disant."],
-  questions:["Quel plat aviez-vous apporté ?","Pourquoi personne n'y a touché ?","Comment s'appelle le voisin bizarre ?","De quoi a-t-il parlé avec {A} ?","Quelle chanson {B} a-t-il mise ?","Comment les gens ont réagi ?","Qui a dansé le premier ?","Qu'a renversé {A} ?","Par où êtes-vous partis ?","À quel étage habite le voisin bizarre ?"]},
+  questions:["Quel plat aviez-vous apporté ?","Pourquoi personne n'y a touché ?","Comment s'appelle le voisin bizarre ?","De quoi a-t-il parlé avec {A} ?","Quelle chanson {B} a-t-il mise ?","Comment les gens ont réagi ?","Sur quelle chanson avez-vous dansé ?","Qu'a renversé {A} ?","Par où êtes-vous partis ?","À quel étage habite le voisin bizarre ?"]},
 { id:"marche", titre:"Le melon disparu", heure:"Dimanche, 9h40", photo:"Le stand des melons",
   pitch:"Le melon champion du concours du marché, 8 kilos, a été volé à 9h40.",
   recit:[
@@ -190,7 +190,7 @@ window.SCENARIOS = [
     "Vous avez acheté des **melons**, mais pas celui-là, promis.",
     "**{A}** s'est fait offrir une **dégustation** et en a beaucoup trop profité.",
     "Vous avez fini en **terrasse**, chargés de sacs."],
-  questions:["Pour qui était le repas ?","Avec quel marchand {B} a-t-il négocié ?","Qu'a-t-il obtenu ?","Combien de melons avez-vous achetés ?","Qu'a goûté {A} ?","Combien en a-t-il mangé ?","Qui portait les sacs ?","Qu'avez-vous commandé en terrasse ?","Qui a payé ?","Qu'avez-vous oublié d'acheter ?"]},
+  questions:["Pour qui était le repas ?","Avec quel marchand {B} a-t-il négocié ?","Qu'a-t-il obtenu ?","Combien de melons avez-vous achetés ?","Qu'a goûté {A} ?","Combien en a-t-il mangé ?","Combien de sacs aviez-vous ?","Qu'avez-vous commandé en terrasse ?","Combien a coûté la terrasse ?","Qu'avez-vous oublié d'acheter ?"]},
 { id:"jeux", titre:"La borne d'arcade", heure:"Samedi, 19h15", photo:"La place vide",
   pitch:"Une borne d'arcade a disparu de la salle de jeux à 19h15. Il a fallu deux personnes pour la porter.",
   recit:[
@@ -199,7 +199,7 @@ window.SCENARIOS = [
     "**{B}** a battu le **record** d'une borne et a fait un scandale pour avoir un lot.",
     "Vous avez échangé vos **tickets** contre un lot complètement nul.",
     "Vous êtes partis juste **avant 19h15**, direction les **sushis**."],
-  questions:["Sur quelle machine {A} a-t-il dépensé ses jetons ?","Combien de jetons aviez-vous ?","À quel jeu {B} a-t-il battu le record ?","Quel lot avez-vous eu avec les tickets ?","Comment s'appelle la salle ?","Qui a gagné au jeu de danse ?","Dans quel restaurant de sushis êtes-vous allés ?","Combien de sushis a mangé {A} ?","Qui a payé les sushis ?","Comment êtes-vous rentrés ?"]},
+  questions:["Sur quelle machine {A} a-t-il dépensé ses jetons ?","Combien de jetons aviez-vous ?","À quel jeu {B} a-t-il battu le record ?","Quel lot avez-vous eu avec les tickets ?","Comment s'appelle la salle ?","Sur quelle chanson avez-vous dansé ?","Dans quel restaurant de sushis êtes-vous allés ?","Combien de sushis a mangé {A} ?","Combien ont coûté les sushis ?","Comment êtes-vous rentrés ?"]},
 { id:"piscine", titre:"Le maître-nageur ligoté", heure:"Mardi, 12h05", photo:"La chaise haute",
   pitch:"Le maître-nageur a été retrouvé ligoté à sa chaise haute avec des frites en mousse à 12h05.",
   recit:[
@@ -208,7 +208,7 @@ window.SCENARIOS = [
     "Le **maître-nageur** vous a sifflés **trois fois**.",
     "**{A}** a tenté un saut du **plongeoir** devant tout le monde.",
     "Vous avez fini au **snack**, les cheveux encore mouillés."],
-  questions:["Qu'avait oublié {B} ?","Comment s'est-il débrouillé ?","Pourquoi le maître-nageur vous a sifflés ?","De quelle hauteur {A} a-t-il sauté ?","Comment s'est passé le saut ?","Combien de longueurs avez-vous nagé ?","De quelle couleur était le maillot de {A} ?","Qu'avez-vous mangé au snack ?","Combien coûtait l'entrée ?","Qui est sorti de l'eau en premier ?"]},
+  questions:["Qu'avait oublié {B} ?","Comment s'est-il débrouillé ?","Pourquoi le maître-nageur vous a sifflés ?","De quelle hauteur {A} a-t-il sauté ?","Comment s'est passé le saut ?","Combien de longueurs avez-vous nagé ?","De quelle couleur était le maillot de {A} ?","Qu'avez-vous mangé au snack ?","Combien coûtait l'entrée ?","Combien de temps êtes-vous restés dans l'eau ?"]},
 { id:"train", titre:"Le contrôleur perdu", heure:"Vendredi, 18h50", photo:"Voiture 6",
   pitch:"Le contrôleur du TER a été enfermé dans les toilettes de la voiture 6 à 18h50.",
   recit:[
@@ -217,7 +217,7 @@ window.SCENARIOS = [
     "**{A}** a sorti un **jeu** pour passer le temps.",
     "Un **inconnu** s'est assis à côté de vous et a parlé tout le trajet.",
     "À l'arrivée, **{B}** s'est rendu compte qu'il avait perdu quelque chose."],
-  questions:["D'où partiez-vous ?","Pourquoi avez-vous failli rater le train ?","À quel jeu avez-vous joué ?","Qui a gagné ?","De quoi parlait l'inconnu ?","Quel âge avait-il ?","Qu'a perdu {B} ?","Qui était côté fenêtre ?","Combien de retard avait le train ?","Qui vous a récupérés à la gare ?"]},
+  questions:["D'où partiez-vous ?","Pourquoi avez-vous failli rater le train ?","À quel jeu avez-vous joué ?","Quel était l'enjeu de la partie ?","De quoi parlait l'inconnu ?","Quel âge avait-il ?","Qu'a perdu {B} ?","Quel était le numéro de vos places ?","Combien de retard avait le train ?","Qui vous a récupérés à la gare ?"]},
 { id:"cours", titre:"L'amphi recouvert", heure:"Lundi, 8h10", photo:"Amphi B, 8h10",
   pitch:"L'amphi B a été entièrement recouvert de post-it avant 8h10. Les post-it viennent de la BU.",
   recit:[
@@ -226,7 +226,7 @@ window.SCENARIOS = [
     "**{B}** s'est endormi sur ses **fiches** au bout d'une heure.",
     "La **bibliothécaire** est venue vous voir à cause de **{A}**.",
     "À midi, vous êtes partis manger, la tête pleine."],
-  questions:["Quelle matière révisiez-vous ?","Où vous êtes-vous finalement installés ?","Combien de temps {B} a-t-il dormi ?","Qui l'a réveillé, et comment ?","Pourquoi la bibliothécaire est-elle venue voir {A} ?","Qui a prêté son chargeur ?","Combien de post-it aviez-vous sur vous ?","Quel livre avez-vous emprunté ?","Où êtes-vous allés manger ?","Qu'a mangé {A} ?"]},
+  questions:["Quelle matière révisiez-vous ?","Où vous êtes-vous finalement installés ?","Combien de temps {B} a-t-il dormi ?","Comment {B} a-t-il été réveillé ?","Pourquoi la bibliothécaire est-elle venue voir {A} ?","Quelle note espérez-vous au partiel ?","Combien de post-it aviez-vous sur vous ?","Quel livre avez-vous emprunté ?","Où êtes-vous allés manger ?","Qu'a mangé {A} ?"]},
 { id:"coiffeur", titre:"La perruque du présentateur", heure:"Mercredi, 11h00", photo:"La loge, 10h58",
   pitch:"La perruque du présentateur météo a disparu à 11h, juste avant le direct. Elle a été vue dans un salon de coiffure.",
   recit:[
@@ -235,7 +235,7 @@ window.SCENARIOS = [
     "**{A}** a demandé une coupe et en est ressorti avec **une tout autre**.",
     "**{B}** a refusé de payer le prix demandé.",
     "Ensuite, vous êtes allés au **centre commercial** pour vous changer les idées."],
-  questions:["Comment s'appelle le salon ?","De quoi parlait le coiffeur ?","Quelle coupe {A} avait-il demandée ?","Avec quelle coupe est-il ressorti ?","Combien coûtait la coupe de {B} ?","Combien a-t-il finalement payé ?","Qui est passé en premier ?","Dans quel magasin êtes-vous allés ensuite ?","Qu'avez-vous acheté ?","Où vous êtes-vous garés ?"]},
+  questions:["Comment s'appelle le salon ?","De quoi parlait le coiffeur ?","Quelle coupe {A} avait-il demandée ?","Avec quelle coupe est-il ressorti ?","Combien coûtait la coupe de {B} ?","Combien a-t-il finalement payé ?","Combien de temps a duré la séance ?","Dans quel magasin êtes-vous allés ensuite ?","Qu'avez-vous acheté ?","Où vous êtes-vous garés ?"]},
 { id:"fourriere", titre:"La voiture du maire", heure:"Jeudi, 13h30", photo:"Place de la mairie",
   pitch:"La voiture du maire a été envoyée à la fourrière avec le maire dedans, à 13h30, devant la mairie.",
   recit:[
@@ -244,7 +244,7 @@ window.SCENARIOS = [
     "Le **biscuit chinois** de {A} annonçait quelque chose d'inquiétant.",
     "Ensuite, vous êtes allés à la **laverie**, juste en face de la mairie.",
     "Pendant que la machine tournait, vous **n'avez rien vu**. Rien du tout."],
-  questions:["Comment s'appelle le restaurant ?","Qu'a commandé {A} ?","Que s'est-il passé avec les baguettes de {B} ?","Que disait le biscuit chinois de {A} ?","Combien a coûté le repas ?","Qui a payé ?","Pourquoi êtes-vous allés à la laverie ?","Combien de temps a tourné la machine ?","Qu'avez-vous fait pendant ce temps ?","Qui a perdu une chaussette ?"]},
+  questions:["Comment s'appelle le restaurant ?","Qu'a commandé {A} ?","Que s'est-il passé avec les baguettes de {B} ?","Que disait le biscuit chinois de {A} ?","Combien a coûté le repas ?","Combien de plats avez-vous commandés ?","Pourquoi êtes-vous allés à la laverie ?","Combien de temps a tourné la machine ?","Qu'avez-vous fait pendant ce temps ?","De quelle couleur était la lessive ?"]},
 { id:"poisson", titre:"Le poisson rouge", heure:"Dimanche, 16h40", photo:"Le stand de pêche",
   pitch:"Le poisson rouge de la fête foraine a été échangé contre une sardine à 16h40, au stand de pêche aux canards.",
   recit:[
@@ -253,7 +253,7 @@ window.SCENARIOS = [
     "Au **stand de tir**, {A} a gagné un lot… énorme et encombrant.",
     "Vous avez mangé un truc beaucoup trop **sucré**.",
     "À 16h40, vous étiez **en haut de la grande roue**, soi-disant."],
-  questions:["Quel manège extrême a fait {B} ?","Pourquoi l'a-t-il regretté ?","Qu'a gagné {A} au stand de tir ?","Qui a porté le lot ensuite ?","Qu'avez-vous mangé ?","Combien de tours de grande roue avez-vous faits ?","Qu'avez-vous vu de là-haut ?","Qui a tamponné l'autre aux autos tamponneuses ?","Combien avez-vous dépensé ?","Quel forain vous a parlé ?"]},
+  questions:["Quel manège extrême a fait {B} ?","Pourquoi l'a-t-il regretté ?","Qu'a gagné {A} au stand de tir ?","Comment avez-vous transporté le lot ?","Qu'avez-vous mangé ?","Combien de tours de grande roue avez-vous faits ?","Qu'avez-vous vu de là-haut ?","De quelle couleur était votre auto tamponneuse ?","Combien avez-vous dépensé ?","Quel forain vous a parlé ?"]},
 { id:"rando", titre:"Le panneau du sommet", heure:"Samedi, 13h00", photo:"Le sommet",
   pitch:"Le panneau du sommet a été retourné à 13h : tous les randonneurs se perdent. Une chèvre est le seul témoin.",
   recit:[
@@ -262,7 +262,7 @@ window.SCENARIOS = [
     "À mi-chemin, vous vous êtes **perdus** pendant presque une heure.",
     "Vous avez pique-niqué au bord de l'eau. **{B}** s'est baigné, l'eau était **glaciale**.",
     "Vous avez croisé une **chèvre** qui vous a suivis longtemps."],
-  questions:["Quelle calanque avez-vous rejointe ?","Qu'avait oublié {A} dans le sac ?","Comment vous êtes-vous retrouvés ?","Qui a dit « on est perdus » en premier ?","Qu'avez-vous pique-niqué ?","Combien de temps {B} est-il resté dans l'eau ?","Comment avez-vous appelé la chèvre ?","Jusqu'où vous a-t-elle suivis ?","Qui s'est égratigné ?","À quelle heure êtes-vous rentrés ?"]},
+  questions:["Quelle calanque avez-vous rejointe ?","Qu'avait oublié {A} dans le sac ?","Comment vous êtes-vous retrouvés ?","Par quel chemin vous êtes-vous perdus ?","Qu'avez-vous pique-niqué ?","Combien de temps {B} est-il resté dans l'eau ?","Comment avez-vous appelé la chèvre ?","Jusqu'où vous a-t-elle suivis ?","Combien de bouteilles d'eau aviez-vous ?","À quelle heure êtes-vous rentrés ?"]},
 { id:"mariage2", titre:"La bague dans le gâteau", heure:"Samedi, 22h30", photo:"La part de gâteau",
   pitch:"La bague de fiançailles cachée dans le gâteau a disparu à 22h30. Deux invités étaient absents de la salle.",
   recit:[
