@@ -15,7 +15,7 @@ const AVATARS = [
   {id:7, nom:"Mèche",    style:"side",   skin:"#FAD7BD", shade:"#E6B392", nose:"#C98E66", hair:"#B8322A", hairD:"#8A1F18", hairL:"#E86A5A", eye:"#6E8FA8", shirt:"#E9DFCB"},
   {id:8,  nom:"Mâchoire",   style:"short",    face:"square", skin:"#F7CDA8", shade:"#E3A780", nose:"#C9875E", hair:"#F2D06B", hairD:"#C9A43C", hairL:"#FFF0B0", eye:"#5A8FC8", shirt:"#FF9F45"},
   {id:9,  nom:"Boucles",    style:"curly",    beard:"short", skin:"#D9A777", shade:"#B9865A", nose:"#9A6640", hair:"#1C1A26", hairD:"#0E0D14", hairL:"#4A4660", eye:"#3B2416", shirt:"#C4232D"},
-  {id:10, nom:"Frange",     style:"straight", skin:"#F2D2A9", shade:"#D9AE80", nose:"#B88A5E", hair:"#141220", hairD:"#0A0910", hairL:"#4A4660", eye:"#2B1D16", shirt:"#2EA35A"},
+  {id:10, nom:"Frange",     style:"straight", eyeShape:"almond", skin:"#F2D2A9", shade:"#D9AE80", nose:"#B88A5E", hair:"#B08A60", hairD:"#7E5F3E", hairL:"#D9BC92", eye:"#2B1D16", shirt:"#2EA35A"},
   {id:11, nom:"Grand roux", style:"side",     freckles:true, skin:"#FBE0CB", shade:"#EBB898", nose:"#D0906A", hair:"#D9662A", hairD:"#A8451A", hairL:"#F59A5C", eye:"#3E7FC8", shirt:"#16213A"},
   {id:12, nom:"Chauve",     style:"bald",     face:"round", beard:"full", skin:"#F0B98F", shade:"#D9976C", nose:"#B87450", hair:"#6B4A2E", hairD:"#4A3220", hairL:"#9C7550", eye:"#5A7FA8", shirt:"#B48CF2"}
 ];
@@ -92,7 +92,23 @@ function hairFront(a){
   return "";
 }
 
+function almondEyes(a, expr){
+  const e = a.eye, open = expr==="shocked" ? 1.5 : 1;
+  const d = {neutral:[0,0], smirk:[1,0], sad:[0,1], shocked:[0,0], confused:[-3,-2]}[expr] || [0,0];
+  const eye = (cx, side) => {
+    const cy = -5, o = side, id = uid("ey");
+    const path = `M${cx-11*o} ${cy-1.5} Q${cx-1*o} ${cy-9*open} ${cx+10*o} ${cy+1} Q${cx} ${cy+7*open} ${cx-11*o} ${cy-1.5} Z`;
+    return `<clipPath id="${id}"><path d="${path}"/></clipPath>
+      <path d="${path}" fill="#FFFFFF" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
+      <g clip-path="url(#${id})"><circle cx="${cx+d[0]}" cy="${cy+d[1]}" r="${expr==="shocked"?3.5:5.5}" fill="${expr==="shocked"?INK:e}"/>${expr==="shocked"?"":`<circle cx="${cx+d[0]}" cy="${cy+d[1]}" r="2.6" fill="${INK}"/><circle cx="${cx+d[0]+1.5}" cy="${cy+d[1]-2}" r="1.6" fill="#FFF"/>`}</g>
+      <path d="M${cx-12*o} ${cy-2} Q${cx-1*o} ${cy-10*open} ${cx+10*o} ${cy+0.5}" stroke="${INK}" stroke-width="3.2" fill="none" stroke-linecap="round"/>`;
+  };
+  let out = eye(-18, 1) + eye(18, -1);
+  if(expr==="sad") out += `<path d="M-26 4 Q-18 9 -10 4 M10 4 Q18 9 26 4" stroke="#7FC8FF" stroke-width="3" fill="none"/>`;
+  return out;
+}
 function eyes(a, expr){
+  if(a.eyeShape==="almond" && expr!=="happy") return almondEyes(a, expr);
   const e = a.eye, w = `fill="#FFFFFF" stroke="${INK}" stroke-width="3.5"`;
   const pair = (dx, dy) => `
     <ellipse cx="-18" cy="-6" rx="9" ry="9" ${w}/><ellipse cx="18" cy="-6" rx="9" ry="9" ${w}/>
