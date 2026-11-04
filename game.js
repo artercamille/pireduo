@@ -246,9 +246,10 @@ function renderDossier(){
   const partner = L.members(S, duo).find(x => x.id !== myId);
   const f = t => esc(L.fmt(t, names));
   const readyDots = L.members(S, duo).map(x => `<div title="${esc(x.name)}" style="width:38px;height:38px;border-radius:50%;border:3px solid ${INK};overflow:hidden;background:${x.ready?"#6FD6B8":"#E9DFCB"};position:relative">${A.portrait(x.av, x.ready?"happy":"neutral", 38, 38)}${x.ready?`<div style="position:absolute;right:-2px;bottom:-2px;width:16px;height:16px;border-radius:50%;background:#2EA35A;border:2px solid ${INK}"></div>`:""}</div>`).join("");
-  const facts = sc.faits.map((t,i)=>`<div style="display:flex;gap:10px;align-items:flex-start;border-bottom:2px dashed #D9CBAE;padding:5px 0">
-      <div class="lil" style="flex:none;width:26px;height:26px;border-radius:50%;background:${duo==="A"?"#2F5DA8":"#FF5A5F"};color:#FFF8EA;border:3px solid ${INK};display:flex;align-items:center;justify-content:center;font-size:14px">${i+1}</div>
-      <div class="typew" style="font-size:16px;line-height:1.3">${f(t)}</div></div>`).join("");
+  const points = sc.points.map(t=>`<div style="display:flex;gap:10px;align-items:center;border-bottom:2px dashed #D9CBAE;padding:6px 0">
+      <div style="flex:none;width:22px;height:22px;border:3px solid ${INK};border-radius:4px;background:#FFF"></div>
+      <div class="marker" style="font-size:19px;line-height:1.15">${f(t)}</div></div>`).join("");
+  const ctx = sc.contexte.map(t=>`<div style="display:flex;gap:8px;align-items:flex-start"><div class="lil" style="color:${duo==="A"?"#2F5DA8":"#D7262E"};font-size:18px;line-height:1.1">▸</div><div class="typew" style="font-size:15px;line-height:1.35">${f(t)}</div></div>`).join("");
   return SC.desk() + `
   ${SC.deskLight()}
   <div class="lil" style="position:absolute;left:318px;top:66px;width:150px;text-align:center;font-size:20px;letter-spacing:1px">MANCHE ${S.round+1} / 3</div>
@@ -256,16 +257,19 @@ function renderDossier(){
     <div class="typew" style="font-size:14px;color:#6B6355">AFFAIRE N° ${String(47+S.round*2+(duo==="B"?1:0)).padStart(3,"0")} · ${esc(sc.heure.toUpperCase())}</div>
     <h1 class="lil" style="margin:0;font-size:40px;line-height:1;color:#16213A">${esc(sc.titre)}</h1>
     <div style="display:flex;align-items:center;gap:8px"><div class="lil" style="font-size:16px;background:${duo==="A"?"#9FD3FF":"#FFB3AE"};border:3px solid ${INK};border-radius:8px;padding:0 10px">SUSPECTS · DUO ${duo}</div><div class="marker" style="font-size:17px">${esc(names.A)} & ${esc(names.B)}</div></div>
-    <p class="typew" style="margin:0;font-size:17px;line-height:34px">${f(sc.pitch)}</p>
-    <div class="marker" style="font-size:20px;color:#D7262E;transform:rotate(-2deg)">→ Apprenez l'alibi par cœur et inventez ensemble TOUT le reste.</div>
+    <p class="typew" style="margin:0;font-size:15px;line-height:1.4;color:#3B3746">${f(sc.pitch)}</p>
+    <div style="margin-top:2px;background:#FFF3DC;border:3px solid ${INK};border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:5px">
+      <div class="lil" style="font-size:15px;letter-spacing:1px">VOTRE VERSION OFFICIELLE</div>${ctx}</div>
   </div>
-  <div class="dropIn" style="--r:-5deg;position:absolute;left:250px;top:478px;width:200px;background:#FFF;border:4px solid ${INK};padding:8px 8px 6px;box-shadow:5px 6px 0 rgba(21,19,31,.35)">
-    <div style="height:86px;background:#2A2048;border:3px solid ${INK};overflow:hidden"><svg aria-hidden="true" width="178" height="80" viewBox="0 0 204 92"><defs><radialGradient id="spot" cx=".5" cy="0" r=".9"><stop offset="0" stop-color="#FF7BD5" stop-opacity=".7"/><stop offset="1" stop-color="#FF7BD5" stop-opacity="0"/></radialGradient></defs><rect width="204" height="92" fill="url(#spot)"/><rect y="70" width="204" height="22" fill="#3B2A5E"/><rect x="76" y="16" width="52" height="52" rx="8" fill="none" stroke="#FFF8EA" stroke-width="4" stroke-dasharray="8 6"/><text x="102" y="54" text-anchor="middle" font-family="Lilita One" font-size="28" fill="#FFC23D">?</text></svg></div>
+  <div class="dropIn" style="--r:-6deg;position:absolute;left:436px;top:520px;width:150px;background:#FFF;border:4px solid ${INK};padding:8px 8px 6px;box-shadow:5px 6px 0 rgba(21,19,31,.35)">
+    <div style="height:62px;background:#2A2048;border:3px solid ${INK};overflow:hidden"><svg aria-hidden="true" width="128" height="58" viewBox="0 0 204 92"><defs><radialGradient id="spot" cx=".5" cy="0" r=".9"><stop offset="0" stop-color="#FF7BD5" stop-opacity=".7"/><stop offset="1" stop-color="#FF7BD5" stop-opacity="0"/></radialGradient></defs><rect width="204" height="92" fill="url(#spot)"/><rect y="70" width="204" height="22" fill="#3B2A5E"/><rect x="76" y="16" width="52" height="52" rx="8" fill="none" stroke="#FFF8EA" stroke-width="4" stroke-dasharray="8 6"/><text x="102" y="54" text-anchor="middle" font-family="Lilita One" font-size="28" fill="#FFC23D">?</text></svg></div>
     <div class="marker" style="font-size:14px;text-align:center">${esc(sc.photo)}</div>
   </div>
   <div class="fadeIn" style="position:absolute;left:668px;top:120px;width:364px;transform:rotate(1.2deg);display:flex;flex-direction:column;gap:2px">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><div class="lil" style="font-size:24px;color:#16213A">L'ALIBI OFFICIEL</div><div class="typew" style="font-size:12px;color:#6B6355">À NE PAS OUBLIER</div></div>
-    ${facts}
+    <div class="lil" style="font-size:22px;color:#16213A;line-height:1.05">CE QUE L'INSPECTEUR VA CREUSER</div>
+    <div class="typew" style="font-size:13px;color:#6B6355;margin-bottom:4px">Inventez une version commune sur chaque point :</div>
+    ${points}
+    <div class="marker" style="margin-top:8px;font-size:17px;color:#D7262E;transform:rotate(-1.5deg)">Et attention : il adore les détails idiots…</div>
   </div>
   <div style="position:absolute;left:860px;top:590px">${SC.stopwatch()}</div>
   <div style="position:absolute;left:980px;top:604px;display:flex;flex-direction:column">

@@ -1,6 +1,6 @@
 // Logique pure du jeu (exécutée par l'hôte). Testable sous Node.
 (function(root){
-const CFG = { PREP_MS: 120000, ANSWER_MS: 30000, REVEAL_MS: 7000, ROUNDEND_MS: 12000, ROUNDS: 3, QUESTIONS: 10 };
+const CFG = { PREP_MS: 180000, ANSWER_MS: 30000, REVEAL_MS: 7000, ROUNDEND_MS: 12000, ROUNDS: 3, QUESTIONS: 10 };
 
 const STOP = new Set(("le la les l un une des du de d au aux a en et ou on il elle ils elles je j tu t nous vous c s est etait ce cet cette ces son sa ses mon ma mes ton ta tes leur leurs avec pour par sur dans y euros euro eur e balles balle environ genre bah ben euh").split(" "));
 const NUM = {zero:"0",deux:"2",trois:"3",quatre:"4",cinq:"5",six:"6",sept:"7",huit:"8",neuf:"9",dix:"10",onze:"11",douze:"12",treize:"13",quatorze:"14",quinze:"15",seize:"16",vingt:"20",trente:"30",quarante:"40",cinquante:"50",cent:"100"};
