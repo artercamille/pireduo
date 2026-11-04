@@ -11,11 +11,21 @@ const AVATARS = [
   {id:3, nom:"Bonnet",   style:"beanie", skin:"#E0A47A", shade:"#C2845A", nose:"#A86A40", hair:"#FF5A5F", hairD:"#C4232D", hairL:"#FFF8EA", eye:"#4A6B3A", shirt:"#FFC23D"},
   {id:4, nom:"Brosse",   style:"short",  skin:"#F5C9A0", shade:"#D99A6E", nose:"#B98058", hair:"#6B4A2E", hairD:"#4A3220", hairL:"#9C7550", eye:"#5A7FA8", shirt:"#FF5A5F"},
   {id:5, nom:"Blonde",   style:"long",   skin:"#F7CDA8", shade:"#E8AE85", nose:"#C9875E", hair:"#F2D06B", hairD:"#C9A43C", hairL:"#FFF0B0", eye:"#4F8F6A", shirt:"#2EA35A"},
-  {id:6, nom:"Barbu",    style:"shaved", skin:"#8D5A3B", shade:"#6E432A", nose:"#4F2E1C", hair:"#2B1D16", hairD:"#1C120C", hairL:"#4A3428", eye:"#2B1D16", shirt:"#16213A"},
-  {id:7, nom:"Mèche",    style:"side",   skin:"#FAD7BD", shade:"#E6B392", nose:"#C98E66", hair:"#B8322A", hairD:"#8A1F18", hairL:"#E86A5A", eye:"#6E8FA8", shirt:"#E9DFCB"}
+  {id:6, nom:"Barbu",    style:"shaved", beard:"full", skin:"#8D5A3B", shade:"#6E432A", nose:"#4F2E1C", hair:"#2B1D16", hairD:"#1C120C", hairL:"#4A3428", eye:"#2B1D16", shirt:"#16213A"},
+  {id:7, nom:"Mèche",    style:"side",   skin:"#FAD7BD", shade:"#E6B392", nose:"#C98E66", hair:"#B8322A", hairD:"#8A1F18", hairL:"#E86A5A", eye:"#6E8FA8", shirt:"#E9DFCB"},
+  {id:8,  nom:"Mâchoire",   style:"short",    face:"square", skin:"#F7CDA8", shade:"#E3A780", nose:"#C9875E", hair:"#F2D06B", hairD:"#C9A43C", hairL:"#FFF0B0", eye:"#5A8FC8", shirt:"#FF9F45"},
+  {id:9,  nom:"Boucles",    style:"curly",    beard:"short", skin:"#D9A777", shade:"#B9865A", nose:"#9A6640", hair:"#1C1A26", hairD:"#0E0D14", hairL:"#4A4660", eye:"#3B2416", shirt:"#C4232D"},
+  {id:10, nom:"Frange",     style:"straight", skin:"#F2D2A9", shade:"#D9AE80", nose:"#B88A5E", hair:"#141220", hairD:"#0A0910", hairL:"#4A4660", eye:"#2B1D16", shirt:"#2EA35A"},
+  {id:11, nom:"Grand roux", style:"side",     freckles:true, skin:"#FBE0CB", shade:"#EBB898", nose:"#D0906A", hair:"#D9662A", hairD:"#A8451A", hairL:"#F59A5C", eye:"#3E7FC8", shirt:"#16213A"},
+  {id:12, nom:"Chauve",     style:"bald",     face:"round", beard:"full", skin:"#F0B98F", shade:"#D9976C", nose:"#B87450", hair:"#6B4A2E", hairD:"#4A3220", hairL:"#9C7550", eye:"#5A7FA8", shirt:"#B48CF2"}
 ];
 
-const FACE = "M-44 -14 Q-46 -62 0 -64 Q46 -62 44 -14 Q44 28 0 42 Q-44 28 -44 -14 Z";
+const FACES = {
+  base:   "M-44 -14 Q-46 -62 0 -64 Q46 -62 44 -14 Q44 28 0 42 Q-44 28 -44 -14 Z",
+  square: "M-45 -14 Q-47 -62 0 -64 Q47 -62 45 -14 L44 18 Q42 38 22 42 L-22 42 Q-42 38 -44 18 Z",
+  round:  "M-50 -10 Q-52 -62 0 -64 Q52 -62 50 -10 Q52 36 0 46 Q-52 36 -50 -10 Z"
+};
+const FACE = FACES.base;
 
 function hairBack(a){
   const s = `stroke="${INK}" stroke-width="4.5" stroke-linejoin="round"`;
@@ -25,6 +35,7 @@ function hairBack(a){
     case "bun": return `<circle cx="0" cy="-78" r="19" fill="${a.hair}" ${s}/><path d="M-10 -86 Q0 -92 10 -86" stroke="${a.hairL}" stroke-width="3.5" fill="none" stroke-linecap="round"/>`;
     case "long": return `<path d="M-56 -20 Q-66 -84 0 -90 Q66 -84 58 -20 L66 58 Q42 70 32 44 L40 0 L-40 0 L-32 44 Q-42 70 -66 58 Z" fill="${a.hairD}" ${s}/>`;
     case "side": return `<path d="M-50 -10 Q-56 -72 0 -74 Q56 -72 50 -10 Z" fill="${a.hairD}" ${s}/>`;
+    case "straight": return `<path d="M-50 -2 Q-58 -78 0 -80 Q58 -78 50 -2 Z" fill="${a.hairD}" ${s}/>`;
     default: return "";
   }
 }
@@ -61,6 +72,18 @@ function hairFront(a){
       <path d="M-36 -64 Q-22 -72 -10 -70" stroke="${a.hairL}" stroke-width="5" fill="none" stroke-linecap="round"/>`;
     case "shaved": return `
       <path d="M-44 -16 Q-46 -66 0 -68 Q46 -66 44 -16 Q40 -42 0 -48 Q-40 -42 -44 -16 Z" fill="${a.hair}" opacity=".7" ${s}/>`;
+    case "curly": {
+      const pts = [[-38,-40],[-28,-54],[-14,-62],[2,-64],[18,-60],[31,-52],[40,-38],[-44,-24],[44,-24],[-20,-48],[-4,-52],[12,-50],[26,-42]];
+      return `<g fill="${a.hair}" stroke="${INK}" stroke-width="3.5">${pts.map(([x,y],i)=>`<circle cx="${x}" cy="${y}" r="${i>8?8:10}"/>`).join("")}</g>
+      <path d="M-30 -58 Q-24 -62 -18 -60 M6 -68 Q12 -70 18 -66" stroke="${a.hairL}" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+    }
+    case "straight": return `
+      <path d="M-49 -4 Q-56 -76 0 -78 Q56 -76 49 -4 L44 -4 L42 -24 L-42 -24 L-44 -4 Z" fill="${a.hair}" ${s}/>
+      <path d="M-30 -24 L-28 -34 M-12 -24 L-11 -36 M8 -24 L9 -36 M26 -24 L28 -34" stroke="${a.hairD}" stroke-width="3" stroke-linecap="round"/>
+      <path d="M-30 -66 Q-6 -74 22 -68" stroke="${a.hairL}" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+    case "bald": return `
+      <ellipse cx="-16" cy="-48" rx="15" ry="7" fill="#FFF" opacity=".5" transform="rotate(-24 -16 -48)"/>
+      <path d="M-49 -6 Q-50 -20 -46 -26 M49 -6 Q50 -20 46 -26" stroke="${a.hair}" stroke-width="7" fill="none" stroke-linecap="round" opacity=".6"/>`;
     case "side": return `
       <path d="M-48 -12 Q-58 -76 0 -80 Q56 -78 52 -18 Q44 -42 18 -40 Q-14 -34 -36 -50 Q-38 -30 -48 -12 Z" fill="${a.hair}" ${s}/>
       <path d="M-34 -50 Q0 -70 44 -50" stroke="${a.hairD}" stroke-width="3" fill="none" stroke-linecap="round"/>
@@ -136,15 +159,20 @@ function head(av, expr="neutral", opt={}){
   s += `<ellipse cx="-45" cy="-4" rx="9" ry="13" fill="${a.skin}" stroke="${INK}" stroke-width="4"/>`;
   s += `<ellipse cx="45" cy="-4" rx="9" ry="13" fill="${a.shade}" stroke="${INK}" stroke-width="4"/>`;
   s += `<path d="M-46 -8 Q-41 -4 -45 2" stroke="${a.nose}" stroke-width="3" fill="none" stroke-linecap="round"/>`;
-  s += `<clipPath id="${cid}"><path d="${FACE}"/></clipPath>`;
-  s += `<path d="${FACE}" fill="${a.skin}" stroke="${INK}" stroke-width="4.5"/>`;
+  const F = FACES[a.face] || FACES.base;
+  s += `<clipPath id="${cid}"><path d="${F}"/></clipPath>`;
+  s += `<path d="${F}" fill="${a.skin}" stroke="${INK}" stroke-width="4.5"/>`;
   s += `<path d="M14 -70 Q52 -44 44 -8 Q42 28 0 44 L0 70 L70 70 L70 -80 Z" fill="${a.shade}" opacity=".85" clip-path="url(#${cid})"/>`;
   s += `<ellipse cx="-22" cy="-30" rx="9" ry="5" fill="#FFF" opacity=".35"/>`;
-  if(a.style==="shaved") s += `<path d="M-42 2 Q-42 44 0 48 Q42 44 42 2 Q32 28 0 30 Q-32 28 -42 2 Z" fill="${a.hair}" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>`;
+  if(a.beard==="full") s += a.face==="round"
+    ? `<path d="M-48 0 Q-48 52 0 56 Q48 52 48 0 Q36 30 0 32 Q-36 30 -48 0 Z" fill="${a.hair}" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/><path d="M-30 22 Q-20 42 0 46 Q20 42 30 22" stroke="${a.hairL}" stroke-width="3" fill="none" stroke-linecap="round"/>`
+    : `<path d="M-42 2 Q-42 44 0 48 Q42 44 42 2 Q32 28 0 30 Q-32 28 -42 2 Z" fill="${a.hair}" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>`;
+  else if(a.beard==="short") s += `<path d="M-43 4 Q-42 40 0 45 Q42 40 43 4 Q38 34 0 37 Q-38 34 -43 4 Z" fill="${a.hair}" opacity=".9" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/><path d="M-6 34 Q0 44 6 34 Z" fill="${a.hair}"/>`;
   else s += `<ellipse cx="-26" cy="15" rx="9" ry="5" fill="#FF8C8C" opacity=".5"/><ellipse cx="26" cy="15" rx="9" ry="5" fill="#FF8C8C" opacity=".4"/>`;
+  if(a.freckles) s += `<g fill="#C9703E" opacity=".75">${[[-30,8],[-24,12],[-34,14],[-26,4],[30,8],[24,12],[34,14],[26,4],[-6,8],[6,9]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="1.8"/>`).join("")}</g>`;
   s += brows(a, expr) + eyes(a, expr);
   s += `<path d="M-1 4 Q-7 14 -1 17 Q4 18 6 15" stroke="${a.nose}" stroke-width="3.5" fill="none" stroke-linecap="round"/>`;
-  if(a.style==="shaved") s += `<path d="M-22 18 Q0 10 22 18 Q12 24 0 21 Q-12 24 -22 18 Z" fill="${a.hair}" stroke="${INK}" stroke-width="3.5"/>`;
+  if(a.beard) s += `<path d="M-22 18 Q0 10 22 18 Q12 24 0 21 Q-12 24 -22 18 Z" fill="${a.hair}" stroke="${INK}" stroke-width="3.5"/>`;
   s += mouth(a, expr);
   s += hairFront(a);
   if(expr==="sad") s += `<path class="drop" d="M-24 8 Q-28 18 -24 24 Q-19 18 -24 8 Z" fill="#9FD8FF" stroke="${INK}" stroke-width="2.5"/><path class="drop" style="animation-delay:.9s" d="M24 8 Q20 18 24 24 Q29 18 24 8 Z" fill="#9FD8FF" stroke="${INK}" stroke-width="2.5"/>`;

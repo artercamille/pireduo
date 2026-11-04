@@ -117,7 +117,7 @@ function finishGame(S){
 
 function addPlayer(S, id, name, av, bot=false){
   name = String(name||"Suspect").replace(/[<>]/g,"").trim().slice(0,16) || "Suspect";
-  av = Math.max(0, Math.min(7, parseInt(av)||0));
+  av = Math.max(0, Math.min(12, parseInt(av)||0));
   if(S.players[id]){ Object.assign(S.players[id], {name, av, online:true}); return S.players[id]; }
   S.players[id] = {id, name, av, duo:null, slot:0, bot, online:true, ready:false};
   S.order.push(id);
@@ -147,7 +147,7 @@ function reduce(S, a, pid, now){
       const used = Object.values(S.players).filter(x=>x.bot).map(x=>x.name);
       const name = BOT_NAMES.find(n=>!used.includes(n)) || "Bot";
       const id = "bot-"+Math.random().toString(36).slice(2,8);
-      addPlayer(S, id, name, Math.floor(Math.random()*8), true);
+      addPlayer(S, id, name, Math.floor(Math.random()*13), true);
       Object.assign(S.players[id], {duo:a.duo||free.duo, slot: a.duo ? a.slot : free.slot});
       if(a.duo && seated(S).filter(x=>x.duo===a.duo&&x.slot===a.slot).length>1) Object.assign(S.players[id], free);
       return true;

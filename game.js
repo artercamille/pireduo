@@ -201,7 +201,7 @@ function render(){
 
 /* Accueil */
 function renderHome(){
-  const avs = A.AVATARS.map(a => `<button type="button" data-act="av" data-v="${a.id}" aria-label="${a.nom}" style="width:100%;height:84px;padding:0;border:4px solid ${INK};border-radius:12px;background:${a.id===myAv?"#FFC23D":"#E9DFCB"};box-shadow:${a.id===myAv?"0 0 0 4px #FFC23D, 0 5px 0 "+INK:"0 5px 0 "+INK};overflow:hidden;display:flex;align-items:flex-end;justify-content:center;transform:${a.id===myAv?"translateY(-4px)":"none"}">${A.portrait(a.id, a.id===myAv?"happy":"neutral", 74, 80)}</button>`).join("");
+  const avs = A.AVATARS.map(a => `<button type="button" data-act="av" data-v="${a.id}" aria-label="${a.nom}" style="width:100%;height:74px;padding:0;border:4px solid ${INK};border-radius:12px;background:${a.id===myAv?"#FFC23D":"#E9DFCB"};box-shadow:${a.id===myAv?"0 0 0 4px #FFC23D, 0 5px 0 "+INK:"0 5px 0 "+INK};overflow:hidden;display:flex;align-items:flex-end;justify-content:center;transform:${a.id===myAv?"translateY(-4px)":"none"}">${A.portrait(a.id, a.id===myAv?"happy":"neutral", 66, 70)}</button>`).join("");
   screen.innerHTML = SC.precinct(false) + SC.title(true) + `
   <div class="popIn" style="position:absolute;left:290px;top:186px;width:700px;background:#FFF8EA;border:6px solid ${INK};border-radius:22px;box-shadow:0 10px 0 ${INK},0 30px 60px rgba(0,0,0,.5);padding:22px 30px 26px;display:flex;flex-direction:column;gap:14px">
     <div style="display:flex;justify-content:space-between;align-items:center">
@@ -211,7 +211,7 @@ function renderHome(){
     <label for="nm" style="font-weight:900;font-size:14px;letter-spacing:2px">TON NOM DE CODE</label>
     <input id="nm" class="input" maxlength="16" placeholder="Ex : Camille" value="${esc(myName)}" autocomplete="off">
     <div style="font-weight:900;font-size:14px;letter-spacing:2px">TA TÊTE DE SUSPECT</div>
-    <div style="display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px">${avs}</div>
+    <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px">${avs}</div>
     <div style="display:flex;gap:16px;align-items:stretch;margin-top:6px">
       ${urlCode ? `
         <button class="btn red" data-act="join" style="flex:1;font-size:26px"${connecting?" disabled":""}><span class="shine"></span><span class="t">${connecting?"CONNEXION…":"REJOINDRE LA SALLE "+esc(urlCode)}</span></button>
