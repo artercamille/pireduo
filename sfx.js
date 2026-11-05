@@ -44,20 +44,34 @@ const SFX = {
   paper(){ noise(.18,.18,0,2500,"bandpass"); },
   join(){ tone(523,.12,"triangle",.15); tone(784,.18,"triangle",.15,.1); },
   pop(){ tone(880,.08,"triangle",.15,0,1320); },
+  shutter(){ noise(.05,.5,0,6000,"highpass"); noise(.09,.35,.07,2500,"bandpass"); tone(2200,.03,"square",.05,.02); },
+  flip(){ noise(.12,.28,0,3200,"bandpass"); tone(520,.06,"triangle",.06,.04,900); },
+  whoosh(){ noise(.45,.32,0,900,"bandpass"); },
+  door(){ tone(60,.5,"sine",.7,0,38); noise(.3,.45,0,400); noise(.12,.3,.25,2600,"highpass"); },
+  clack(){ noise(.03,.3,0,2800,"bandpass"); noise(.03,.2,.07,2800,"bandpass"); },
   win(){ [523,659,784,1047].forEach((f,i)=>tone(f,.25,"triangle",.18,i*.12)); }
 };
 
+let voices = [];
+function loadVoices(){ try{ voices = speechSynthesis.getVoices(); }catch(e){} }
+if("speechSynthesis" in window){ loadVoices(); try{ speechSynthesis.onvoiceschanged = loadVoices; }catch(e){} }
 function speak(text, opts={}){
-  if(muted || !("speechSynthesis" in window)) return;
+  const fake = () => { if(opts.onstart) opts.onstart(); setTimeout(() => opts.onend && opts.onend(), Math.min(3500, 600 + text.length*45)); };
+  if(muted || !("speechSynthesis" in window)) return fake();
   try{
     speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
-    const vs = speechSynthesis.getVoices().filter(v => v.lang && v.lang.toLowerCase().startsWith("fr"));
+    if(!voices.length) loadVoices();
+    const vs = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith("fr"));
     const pref = vs.find(v => /thomas|paul|male|homme|henri|daniel/i.test(v.name)) || vs[0];
     if(pref) u.voice = pref;
     u.lang = "fr-FR"; u.rate = opts.rate || 0.98; u.pitch = opts.pitch || 0.55; u.volume = 1;
+    let started = false;
+    u.onstart = () => { started = true; opts.onstart && opts.onstart(); };
+    u.onend = u.onerror = () => { opts.onend && opts.onend(); };
     speechSynthesis.speak(u);
-  }catch(e){}
+    setTimeout(() => { if(!started) fake(); }, 900); // aucune voix dispo : on anime quand même
+  }catch(e){ fake(); }
 }
 
 window.AUDIO = {

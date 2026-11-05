@@ -1,17 +1,33 @@
 // Logique pure du jeu (exécutée par l'hôte). Testable sous Node.
 (function(root){
-const CFG = { PREP_MS: 180000, ANSWER_MS: 30000, REVEAL_MS: 7000, ROUNDEND_MS: 12000, ROUNDS: 3, QUESTIONS: 10 };
+const CFG = { PREP_MS: 180000, ANSWER_MS: 30000, REVEAL_MS: 8500, ROUNDEND_MS: 12000, ROUNDS: 3, QUESTIONS: 10 };
 
-const STOP = new Set(("le la les l un une des du de d au aux a en et ou on il elle ils elles je j tu t nous vous c s est etait ce cet cette ces son sa ses mon ma mes ton ta tes leur leurs avec pour par sur dans y euros euro eur e balles balle environ genre bah ben euh").split(" "));
-const NUM = {zero:"0",deux:"2",trois:"3",quatre:"4",cinq:"5",six:"6",sept:"7",huit:"8",neuf:"9",dix:"10",onze:"11",douze:"12",treize:"13",quatorze:"14",quinze:"15",seize:"16",vingt:"20",trente:"30",quarante:"40",cinquante:"50",cent:"100"};
+const STOP = new Set(("le la les l un une des du de d au aux a en et ou on il elle ils elles je j tu t nous vous c s est etait ce cet cette ces son sa ses mon ma mes ton ta tes leur leurs avec pour par sur dans y euros euro eur e balles balle environ genre bah ben euh tout toute tous toutes juste vers plutot peut etre crois pense sais quoi vraiment bien tres").split(" "));
+const NUM = {zero:"0",deux:"2",trois:"3",quatre:"4",cinq:"5",six:"6",sept:"7",huit:"8",neuf:"9",dix:"10",onze:"11",douze:"12",treize:"13",quatorze:"14",quinze:"15",seize:"16",vingt:"20",trente:"30",quarante:"40",cinquante:"50",soixante:"60",cent:"100",mille:"1000"};
+const UNITS = {un:1,une:1,deux:2,trois:3,quatre:4,cinq:5,six:6,sept:7,huit:8,neuf:9};
+const TENS = {vingt:20,trente:30,quarante:40,cinquante:50,soixante:60};
+const NEG = new Set(["pas","jamais","non","aucun","aucune","nan"]);
 
 function norm(s){
   if(!s) return "";
-  s = String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
-  s = s.replace(/(\d+)\s*h\s*(00)?\b/g, "$1h").replace(/(\d+)\s*(€|e\b)/g,"$1 ");
+  s = String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  s = s.replace(/\b(une|1)\s*heures?\b/g, "1h").replace(/\bmidi\b/g, "12h").replace(/\bminuit\b/g, "0h");
+  s = s.replace(/(\d+)\s*h(?:eures?)?\s*(00)?\b/g, "$1h").replace(/(\d+)\s*(€|e\b)/g,"$1 ");
   s = s.replace(/['’`]/g," ").replace(/[^a-z0-9 ]/g," ");
-  return s.split(/\s+/).filter(t => t && !STOP.has(t)).map(t => NUM[t] || t).map(t => (t.length>3 && /[sx]$/.test(t)) ? t.slice(0,-1) : t).join(" ");
+  // nombres composés : « vingt-deux », « trente et un », « dix-sept »
+  const raw = s.split(/\s+/).filter(Boolean), tk = [];
+  for(let i=0;i<raw.length;i++){
+    const t = raw[i];
+    if(TENS[t]){ let j = i+1; if(raw[j]==="et") j++; if(UNITS[raw[j]]){ tk.push(String(TENS[t]+UNITS[raw[j]])); i = j; continue; } }
+    if(t==="dix" && ["sept","huit","neuf"].includes(raw[i+1])){ tk.push(String(10+UNITS[raw[i+1]])); i++; continue; }
+    tk.push(t);
+  }
+  return tk.filter(t => !STOP.has(t)).map(t => NUM[t] || t)
+    .map(t => (t.length>3 && /[sx]$/.test(t)) ? t.slice(0,-1) : t)
+    .map(t => (t.length>3 && /e$/.test(t)) ? t.slice(0,-1) : t)
+    .join(" ");
 }
+function hasNeg(s){ return String(s||"").toLowerCase().split(/[^a-zà-ÿ]+/).some(t => NEG.has(t)); }
 function lev(a,b){
   const m=a.length,n=b.length; if(!m) return n; if(!n) return m;
   let p=Array.from({length:n+1},(_,j)=>j);
@@ -21,20 +37,22 @@ function lev(a,b){
 function isMatch(a,b){
   const na=norm(a), nb=norm(b);
   if(!na || !nb) return false;
+  if(hasNeg(a) !== hasNeg(b)) return false;
   if(na===nb) return true;
   const ta=new Set(na.split(" ")), tb=new Set(nb.split(" "));
   const inter=[...ta].filter(x=>tb.has(x)).length, uni=new Set([...ta,...tb]).size;
   if(inter/uni >= 0.67) return true;
   const ca=na.replace(/ /g,""), cb=nb.replace(/ /g,"");
   if(Math.min(ca.length,cb.length)>=4 && (ca.includes(cb)||cb.includes(ca))) return true;
-  const L=Math.max(ca.length,cb.length);
-  if(L>=4 && 1-lev(ca,cb)/L >= 0.8) return true;
+  const L=Math.max(ca.length,cb.length), d=lev(ca,cb);
+  if(L<=6) return L>=4 && d<=1 && ca[0]===cb[0];
+  if(1-d/L >= 0.8) return true;
   return false;
 }
 
 function createState(code, hostId){
   return { v:1, code, hostId, phase:"lobby", players:{}, order:[], round:0, scen:[], usedScen:[], q:0,
-           answers:{}, signed:{}, overrides:{}, ridx:0, turn:"A", bets:{}, extra:{}, deadline:null, botAt:{}, gage:"", loser:null, ev:0 };
+           answers:{}, signed:{}, overrides:{}, ridx:0, turn:"A", bets:{}, extra:{}, drafts:{}, deadline:null, botAt:{}, gage:"", loser:null, ev:0 };
 }
 function members(S, duo){ return S.order.map(id=>S.players[id]).filter(p=>p && p.duo===duo).sort((a,b)=>a.slot-b.slot); }
 function seated(S){ return S.order.map(id=>S.players[id]).filter(p=>p && p.duo); }
@@ -67,10 +85,11 @@ function scores(S){
   return {total:sc, per};
 }
 
+const AVATAR_IDS = [1,2,3,4,5,6,7,8,9,10,11,12]; // l'avatar 0 a été retiré
 const BOT_NAMES = ["Bot Gégé","Bot Josiane","Bot Kévin","Bot Mireille"];
 const BOT_POOL = ["Pizza","Bleu","Rouge","Noir","{A}","{B}","22h","Minuit","À pied","En bus","Personne","12 euros","20 euros","Un Coca","De l'eau","Au fond","Devant","Aucune idée","Un chien","Le serveur","3","Vert"];
 
-// Paris des spectateurs : nombre de bons paris par joueur (sur les questions déjà révélées)
+// Paris des spectateurs (bots exclus du classement) : nombre de bons paris par joueur (sur les questions déjà révélées)
 function flair(S){
   const out = {};
   for(const k in S.bets){
@@ -91,7 +110,7 @@ function pickScenarios(S){
   S.usedScen.push(...S.scen);
 }
 function startQuestion(S, now){
-  S.signed = {}; S.deadline = now + CFG.ANSWER_MS; S.botAt = {};
+  S.signed = {}; S.drafts = {}; S.deadline = now + CFG.ANSWER_MS; S.botAt = {};
   seated(S).filter(p=>p.bot && p.duo===S.turn).forEach(p => S.botAt[p.id] = now + 2500 + Math.random()*9000);
   const bk = S.round+"-"+S.turn+"-"+S.q;
   seated(S).filter(p=>p.bot && p.duo!==S.turn).forEach(p => { S.bets[bk] = S.bets[bk] || {}; S.bets[bk][p.id] = Math.random() < .5; });
@@ -100,10 +119,16 @@ function startDossier(S, now){
   S.phase = "dossier"; S.q = 0; S.deadline = now + CFG.PREP_MS;
   Object.values(S.players).forEach(p => p.ready = !!p.bot);
 }
+function betsClosed(S){ return members(S,S.turn).some(p => S.signed[p.id]); }
+function maxScore(S, duo){ let n = 0; for(let r=0;r<CFG.ROUNDS;r++) n += nq(S, r, duo); return n; }
 function everyoneSigned(S){ return members(S,S.turn).filter(p=>p.online||p.bot).every(p=>S.signed[p.id]); }
 function everyoneReady(S){ return members(S,S.turn).filter(p=>p.online||p.bot).every(p=>p.ready); }
 function nextQuestion(S, now){
   const key = S.round+"-"+S.q; S.answers[key] = S.answers[key] || {};
+  for(const p of members(S, S.turn)){
+    const d = S.drafts && S.drafts[p.id];
+    if(!S.signed[p.id] && d){ S.answers[key][p.id] = d; S.signed[p.id] = true; }
+  }
   if(S.q+1 < nq(S, S.round, S.turn)){ S.q++; startQuestion(S, now); }
   else { S.phase = "reveal"; S.ridx = 0; S.deadline = now + CFG.REVEAL_MS; }
 }
@@ -117,8 +142,10 @@ function finishGame(S){
 
 function addPlayer(S, id, name, av, bot=false){
   name = String(name||"Suspect").replace(/[<>]/g,"").trim().slice(0,16) || "Suspect";
-  av = Math.max(0, Math.min(12, parseInt(av)||0));
-  if(S.players[id]){ Object.assign(S.players[id], {name, av, online:true}); return S.players[id]; }
+  av = parseInt(av); if(!AVATAR_IDS.includes(av)) av = AVATAR_IDS[0];
+  if(S.players[id]){ Object.assign(S.players[id], {name: S.players[id].name, av, online:true}); return S.players[id]; }
+  const taken = new Set(Object.values(S.players).map(p => p.name.toLowerCase()));
+  if(taken.has(name.toLowerCase())){ let n = 2; while(taken.has((name.slice(0,13)+" "+n).toLowerCase())) n++; name = name.slice(0,13)+" "+n; }
   S.players[id] = {id, name, av, duo:null, slot:0, bot, online:true, ready:false};
   S.order.push(id);
   if(S.phase==="lobby"){ const free = freeSlot(S); if(free) Object.assign(S.players[id], free); }
@@ -147,7 +174,7 @@ function reduce(S, a, pid, now){
       const used = Object.values(S.players).filter(x=>x.bot).map(x=>x.name);
       const name = BOT_NAMES.find(n=>!used.includes(n)) || "Bot";
       const id = "bot-"+Math.random().toString(36).slice(2,8);
-      addPlayer(S, id, name, Math.floor(Math.random()*13), true);
+      addPlayer(S, id, name, AVATAR_IDS[Math.floor(Math.random()*AVATAR_IDS.length)], true);
       Object.assign(S.players[id], {duo:a.duo||free.duo, slot: a.duo ? a.slot : free.slot});
       if(a.duo && seated(S).filter(x=>x.duo===a.duo&&x.slot===a.slot).length>1) Object.assign(S.players[id], free);
       return true;
@@ -156,7 +183,7 @@ function reduce(S, a, pid, now){
     case "start": {
       if(!isHost || S.phase!=="lobby") return false;
       if(members(S,"A").length<2 || members(S,"B").length<2) return false;
-      S.round = 0; S.turn = "A"; S.answers = {}; S.bets = {}; S.extra = {}; S.overrides = {}; S.loser = null; S.gage = "";
+      S.round = 0; S.turn = "A"; S.answers = {}; S.bets = {}; S.extra = {}; S.drafts = {}; S.overrides = {}; S.loser = null; S.gage = "";
       pickScenarios(S); startDossier(S, now); return true;
     }
     case "ready": if(S.phase!=="dossier"||!p||p.duo!==S.turn) return false; p.ready = !p.ready; if(everyoneReady(S)){ S.phase="interro"; S.q=0; startQuestion(S, now); } return true;
@@ -168,12 +195,17 @@ function reduce(S, a, pid, now){
       if(everyoneSigned(S)) nextQuestion(S, now);
       return true;
     }
+    case "draft": {
+      if(S.phase!=="interro" || !p || p.duo!==S.turn || S.signed[pid]) return false;
+      S.drafts[pid] = String(a.text||"").replace(/[<>]/g,"").trim().slice(0,80); return false; // pas de diffusion
+    }
     case "bet": {
-      if(S.phase!=="interro" || !p || !p.duo || p.duo===S.turn) return false;
+      // spectateurs uniquement (assis dans l'autre duo ou simples spectateurs), et seulement avant la 1re signature
+      if(S.phase!=="interro" || !p || p.duo===S.turn || betsClosed(S)) return false;
       const bk = S.round+"-"+S.turn+"-"+S.q; S.bets[bk] = S.bets[bk] || {}; S.bets[bk][pid] = !!a.v; return true;
     }
     case "trap": {
-      if((S.phase!=="dossier" && S.phase!=="interro") || !p || !p.duo || p.duo===S.turn) return false;
+      if((S.phase!=="dossier" && S.phase!=="interro") || !p || p.duo===S.turn) return false;
       if(S.phase==="interro" && S.q >= CFG.QUESTIONS-1) return false;
       const k = S.round+"-"+S.turn; if(S.extra[k]) return false;
       const text = String(a.text||"").replace(/[<>]/g,"").trim().slice(0,120); if(text.length < 4) return false;
@@ -182,7 +214,7 @@ function reduce(S, a, pid, now){
     case "override": {
       if(S.phase!=="reveal" && S.phase!=="roundEnd") return false;
       const {q,duo} = stepInfo(a.idx, S);
-      if(!(isHost || (p && p.duo && p.duo!==duo))) return false;
+      if(!p || p.duo===duo) return false; // personne ne conteste les réponses de son propre duo
       if(S.phase==="reveal" && a.idx>S.ridx) return false;
       const k = S.round+"-"+q+"-"+duo; S.overrides[k] = !matchOf(S,S.round,q,duo); return true;
     }
@@ -233,6 +265,6 @@ function tick(S, now){
   return ch;
 }
 
-const API = { nq, flair, CFG, norm, isMatch, createState, members, seated, duoNames, fmt, scenOf, stepInfo, matchOf, scores, addPlayer, removePlayer, reduce, tick, freeSlot };
+const API = { AVATAR_IDS, betsClosed, maxScore, hasNeg, nq, flair, CFG, norm, isMatch, createState, members, seated, duoNames, fmt, scenOf, stepInfo, matchOf, scores, addPlayer, removePlayer, reduce, tick, freeSlot };
 if(typeof module!=="undefined" && module.exports) module.exports = API; else root.LOGIC = API;
 })(typeof window!=="undefined" ? window : globalThis);

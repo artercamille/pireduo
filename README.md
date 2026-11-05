@@ -12,7 +12,9 @@ Pendant la préparation (3 min), le duo qui passe file dans un salon vocal Disco
 
 ## Fonctionnement technique
 - 100 % statique (HTML/CSS/JS), hébergeable sur GitHub Pages.
-- Multijoueur en pair-à-pair (PeerJS) : le navigateur de l'hôte fait office de serveur. Si l'hôte ferme son onglet, la partie s'arrête.
+- Multijoueur en pair-à-pair (PeerJS) : le navigateur de l'hôte fait office de serveur.
+- Un refresh (hôte ou joueur) ne casse plus la partie : l'hôte rouvre la salle et tout le monde se reconnecte tout seul. Fermer l'onglet de l'hôte arrête toujours la partie.
+- Polices embarquées dans `fonts/` (aucune dépendance à Google Fonts).
 - Bouton **+ Bot de test** dans le salon pour tester seul.
 - `?local=1` utilise un serveur PeerJS local sur le port 9000 (tests).
 

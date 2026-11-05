@@ -5,7 +5,7 @@ let uidN = 0;
 const uid = p => p + (++uidN);
 
 const AVATARS = [
-  {id:0, nom:"Surfeur",  style:"surf",   skin:"#F7CDA8", shade:"#E8AE85", nose:"#C9875E", hair:"#E8913F", hairD:"#C9702A", hairL:"#FFC98A", eye:"#6E8FA8", shirt:"#2F5DA8"},
+  {id:0, nom:"Surfeur",  hidden:true, style:"surf",   skin:"#F7CDA8", shade:"#E8AE85", nose:"#C9875E", hair:"#E8913F", hairD:"#C9702A", hairL:"#FFC98A", eye:"#6E8FA8", shirt:"#2F5DA8"},
   {id:1, nom:"Bouclé",   style:"afro",   skin:"#B5744C", shade:"#93593A", nose:"#7A4528", hair:"#2B1D16", hairD:"#1C120C", hairL:"#5A4232", eye:"#3B2416", shirt:"#6FD6B8"},
   {id:2, nom:"Chignon",  style:"bun",    skin:"#F2C29B", shade:"#D69A6E", nose:"#B87A50", hair:"#1C1A26", hairD:"#0E0D14", hairL:"#4A4660", eye:"#3B2416", shirt:"#B48CF2"},
   {id:3, nom:"Bonnet",   style:"beanie", skin:"#E0A47A", shade:"#C2845A", nose:"#A86A40", hair:"#FF5A5F", hairD:"#C4232D", hairL:"#FFF8EA", eye:"#4A6B3A", shirt:"#FFC23D"},
@@ -219,8 +219,8 @@ function detainee(av, expr, label){
   <g class="${expr==='shocked'?'shake':''}">
     <rect x="-84" y="148" width="168" height="88" rx="8" fill="#20283C" stroke="${INK}" stroke-width="5"/>
     <rect x="-76" y="156" width="152" height="72" rx="4" fill="none" stroke="#3A4560" stroke-width="2.5"/>
-    <text x="0" y="176" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="11" letter-spacing="2" fill="#C9D2E3">COMMISSARIAT CENTRAL</text>
-    <text x="0" y="212" text-anchor="middle" font-family="Lilita One" font-size="34" fill="#FFC23D">${label}</text>
+    <text x="0" y="175" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="10" letter-spacing="1.5" fill="#C9D2E3">COMMISSARIAT</text>
+    <text x="0" y="211" text-anchor="middle" font-family="Lilita One" font-size="${label.length>6?28:34}" fill="#FFC23D">${label}</text>
     <text x="0" y="226" text-anchor="middle" font-family="Special Elite" font-size="11" fill="#8592AA">${new Date().toLocaleDateString('fr-FR')}</text>
     <path d="M-102 178 Q-110 196 -100 210 Q-88 220 -76 212 L-72 186 Q-82 172 -102 178 Z" fill="${a.skin}" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
     <path d="M-76 186 Q-66 186 -66 192 Q-66 198 -76 198 M-76 198 Q-66 198 -66 204 Q-66 210 -76 210" fill="${a.skin}" stroke="${INK}" stroke-width="3.5"/>
@@ -255,7 +255,7 @@ function inspector(){
   <ellipse cx="116" cy="124" rx="9" ry="7" fill="${INK}"/><circle cx="119" cy="121" r="2.5" fill="#FFF"/>
   <g class="blink"><circle cx="186" cy="120" r="13" fill="#FFF" stroke="${INK}" stroke-width="4"/><circle cx="188" cy="122" r="6" fill="${INK}"/><circle cx="190" cy="119" r="2" fill="#FFF"/></g>
   <path class="wiggle" d="M98 172 Q120 150 150 166 Q180 150 202 172 Q214 186 222 176 Q214 198 188 190 Q168 184 150 178 Q132 184 112 190 Q86 198 78 176 Q86 186 98 172 Z" fill="#5A3418" stroke="${INK}" stroke-width="4.5" stroke-linejoin="round"/>
-  <path d="M134 196 Q150 202 166 196" stroke="${INK}" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <g class="jaw"><ellipse cx="150" cy="199" rx="13" ry="3.5" fill="#5A1E22" stroke="${INK}" stroke-width="3.5"/></g>
   <path d="M40 70 Q40 52 70 50 L230 50 Q260 52 260 70 L262 78 L38 78 Z" fill="#6B4A2E" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>
   <path d="M78 52 Q78 -6 150 -8 Q222 -6 222 52 Z" fill="#7E5838" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>
   <path d="M118 2 Q150 18 182 2" fill="none" stroke="${INK}" stroke-width="4"/>
@@ -267,5 +267,6 @@ function inspectorHead(w=120,h=124){
   return `<svg aria-hidden="true" width="${w}" height="${h}" viewBox="40 -12 220 228"><path d="M60 216 Q70 200 150 196 Q230 200 240 216 Z" fill="#D9B87A" stroke="${INK}" stroke-width="6"/>${inspector().replace(/<path d="M-10 470[\s\S]*?<rect x="128"/, '<rect x="128"')}</svg>`;
 }
 
-window.ART = { AVATARS, head, portrait, detainee, inspector, inspectorHead, INK };
+const PICKABLE = AVATARS.filter(a => !a.hidden);
+window.ART = { PICKABLE, AVATARS, head, portrait, detainee, inspector, inspectorHead, INK };
 })();
